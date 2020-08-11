@@ -1,0 +1,120 @@
+<div class="kt-form" style="margin:10px;padding:10px;background-color: white;border: black solid 1px">
+    <div class="kt-portlet__body">
+        <div class="form-group kt-form__group row">
+            <div class="col-lg-12">
+                <div *ngIf="group">
+                    <div class="header-container">
+                        <div>
+                            <img src="assets/media/logos/it.png" width="130px" height="130px">
+                        </div>
+                        <div>
+                            <h5>Details For ,{{group.groupName}}</h5>
+                        </div>
+                    </div>
+
+                    <div class="kt-invoice__body m-2">
+                        <div class="kt-invoice__container">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Days</th>
+                                            <th>from Time</th>
+                                            <th>To Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let group of group.groupSchedule">
+                                            <td>{{group.days}}</td>
+                                            <td>{{group.Hourfrom}}</td>
+                                            <td>{{group.Hourto}}</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="kt-invoice__body" *ngIf="group.groupTracks&&group.groupTracks.length>0">
+                        <div class="kt-invoice__container">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th> Track</th>
+                                            <th> TrackStartDate</th>
+                                            <th> TrackEndDate</th>
+                                            <th> TrackHours</th>
+                                            <th> TrackLectures</th>
+                                            <th> TrackTeachedHours</th>
+                                            <th> Trainer</th>
+                                            <th> TrainerPricePerHour</th>
+                                            <th> Track Status</th>
+                                            <th> IsPaid?</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let track of group.groupTracks">
+                                            <td>{{getTrackName(track.trackID)}}</td>
+                                            <td>{{track.trackStartDate|date}}</td>
+                                            <td>{{track.trackEndDate|date}}</td>
+                                            <td>{{getTrackHours(track.trackID)}}</td>
+                                            <td>{{track.trackHistory.length}}</td>
+                                            <td>{{track.trainerTotalTeachedHours}}</td>
+                                            <td>{{getTrainerName(track.trainerID)}}</td>
+                                            <td>{{track.trainerPricePerHour}}</td>
+                                            <td>{{track.trackStatus}}</td>
+                                            <td>{{track.isPaid}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                     
+                    <div class="kt-invoice__body" *ngIf="teachingAttendant&&teachingAttendant.length>0">
+                        <div class="kt-invoice__container">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>SIGN IN</th>
+                                            <th> SIGN OUT</th>
+                                            <th> DATE</th>
+                                            <th> ACTUAL TEACHED HOURS</th>
+    
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let attendant of teachingAttendant">
+                                            <td *ngIf="attendant.signin">{{attendant.teacheingAttendantID}}</td>
+                                            <td *ngIf="attendant.signin">{{attendant.signin}}</td>
+                                            <td *ngIf="attendant.signOut">{{attendant.signOut}}</td>
+                                            <td *ngIf="attendant.date">{{attendant.date|date}}</td>
+                                            <td *ngIf="attendant.date">{{attendant.actualTeachedHours}}</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                         
+                    <hr class="mt-1 mb-1">
+                    <h4 class="text-center">cource {{Coursename}} Dates</h4>
+
+                    <div class="row m-2">
+                        <div class="col-3" *ngFor="let group of group.cousreHistory">
+                            <h6>{{group|date}}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

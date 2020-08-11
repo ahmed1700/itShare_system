@@ -1,0 +1,17 @@
+.kt-invoice__brand ,.kt-invoice__logo,.kt-invoice__items{
+    margin: 5px;
+}
+
+.header-container{
+    display: flex;
+    justify-content: center;
+    align-items:baseline;
+}
+
+.body-container{
+    display: flex;
+    justify-content: space-between;
+    align-items:baseline;
+    flex-wrap: nowrap;
+    margin: 15px;
+}

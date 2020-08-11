@@ -1,0 +1,47 @@
+<div
+    style="display:flex;justify-content:space-between;padding:15px;background-color: white;align-items: center;margin-bottom: 15px">
+    <div>
+        <a routerLink="/trainergroups">
+            <img src="assets/media/logos/Logo_ITShare.jpg" width="200px" height="60px">
+        </a>
+    </div>
+    <div>
+        <span style="color:black;font-family: 'Roboto', sans-serif;">Hi {{trainerName}}</span>
+        <button class="example-icon" aria-hidden="false" mat-icon-button [matMenuTriggerFor]="menu"
+            aria-label="Example icon-button with a menu">
+            <mat-icon style="transform: scale(2);">account_circle</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="showCalender()">
+                <mat-icon>calendar_today</mat-icon>
+                <span>My Calender</span>
+            </button>
+            <button (click)="changePassword()" mat-menu-item>
+                <mat-icon>autorenew</mat-icon>
+                <span>Change My Password</span>
+            </button>
+            <button (click)="showPayment()" mat-menu-item>
+                <mat-icon>attach_money</mat-icon>
+                <span>My Payment</span>
+            </button>
+            <button (click)="logOut()" mat-menu-item>
+                <mat-icon>exit_to_app</mat-icon>
+                <span>Log Out</span>
+            </button>
+        </mat-menu>
+    </div>
+</div>
+<router-outlet></router-outlet>
+
+
+<!-- Footer -->
+<footer class="page-footer font-small light">
+
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">© 2020 Copyright:
+          <a href="https://mdbootstrap.com/"> ITShareAcademy.com</a>
+        </div>
+        <!-- Copyright -->
+      
+      </footer>

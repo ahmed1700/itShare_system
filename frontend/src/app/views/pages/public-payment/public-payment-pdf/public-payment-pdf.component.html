@@ -1,0 +1,82 @@
+<kt-alert *ngIf="noPayment" type="warn">
+    {{noPayment}}
+</kt-alert>
+<div #billingFile id="billingFile" *ngIf="allPublicPayments&&allPublicPayments.length>0">
+    <div class="header-container">
+        <div>
+            <img src="assets/media/logos/it.png"
+                width="130px" height="130px">
+        </div>
+        <div>
+            <h5> Public Payment Report :<span><span *ngIf="!end_date&&branch">For</span><span *ngIf="start_day&&end_date">From:</span> {{start_day|date}}</span><span *ngIf="end_date">To: {{end_date|date}} </span><span *ngIf="branch">Branch {{getBranchName(branch)}} </span><span *ngIf="!branch"> For all branches </span></h5>
+        </div>
+    </div>
+ 
+    <div class="kt-invoice__body" *ngIf="allPublicPayments">
+        <div class="kt-invoice__container">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>NUMBER</th>
+                            <th>CATEGORY</th>
+                            <th>EMPLOYEE</th>
+                            <th>BRANCH</th>
+                            <th>PAID</th> 
+                            <th>TRANSACTION TYPE</th>
+                            <th>DATE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let allPayment of allPublicPayments">
+                            <td>{{allPayment.publicPaymentID}}</td>
+                            <td>{{getCategoryName(allPayment.categoryID)}}</td>
+                            <td>{{getEmployeeName(allPayment.employeeID)}}</td>
+                            <td>{{getBranchName(allPayment.branchID)}}</td>
+                            <td>{{allPayment.paid}}</td>
+                            <td>{{allPayment.tranactionType}}</td>
+                            <td>{{allPayment.creationDate|date}}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="kt-invoice__footer">
+        <div class="kt-invoice__container">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+
+
+                            <th> TOTAL PAID</th>
+                            <th>TOTAL REFUND</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{totalPaid}}</td>
+                            <td>{{totalRefund}}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="kt-invoice__actions">
+    <div class="kt-invoice__container" *ngIf="!noPayment">
+        <button style="margin:10px" type="button" class="btn btn-brand btn-bold" (click)="print()">Print
+            Invoice</button>
+    </div>
+</div>

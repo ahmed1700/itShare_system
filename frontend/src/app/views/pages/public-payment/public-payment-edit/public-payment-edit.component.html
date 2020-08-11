@@ -1,0 +1,195 @@
+<kt-portlet>
+    <kt-portlet-header title="Add Payment" [class]="'kt-portlet__head--lg'">
+        <ng-container ktPortletTools>
+            <a [routerLink]="['/publicPayment']" class="btn btn-secondary kt-margin-r-10" mat-raised-button
+                matTooltip="Back to the exams list">
+                <i class="la la-arrow-left"></i>
+                <span class="kt-hidden-mobile">Back</span>
+            </a>
+            <a href="javascript:;" class="btn btn-secondary kt-margin-r-10" (click)="reset()"
+                [disabled]="selectedTab !== 0" mat-raised-button matTooltip="Reset changes">
+                <i class="la la-cog"></i>
+                <span>Reset</span>
+            </a>
+            <a href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="onSumbit(false)"
+                mat-raised-button matTooltip="Save & Continue">
+                <span>Save</span>
+            </a>
+        </ng-container>
+    </kt-portlet-header>
+
+    <kt-portlet-body>
+        <mat-tab-group [(selectedIndex)]="selectedTab">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <i class="mat-tab-label-icon fa fa-user"></i>
+                    Payment
+                </ng-template>
+                <ng-template matTabContent>
+                    <!--begin::Form                      class="kt-form kt-form--group-seperator-dashed"-->
+                    <div *ngIf="PublicPayment">
+                        <form [formGroup]="PublicPaymentForm" class="kt-form">
+
+                            <kt-alert *ngIf="errorMessage" type="warn" [showCloseButton]="true" [duration]="10000"
+                                (close)="onAlertClose($event)">
+                                {{errorMessage}}
+                            </kt-alert>
+                            <!-- kt-form__section--first class="kt-form__section " -->
+                            <div>
+
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-6  col-md-6  col-sm-6 kt-margin-bottom-20-mobile"
+                                        *ngIf="isAdmin">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <mat-label>Choose Branch</mat-label>
+                                            <mat-select formControlName="branchID">
+                                                <mat-option *ngFor="let branch of allBranches"
+                                                    [value]="branch.branchID">
+                                                    {{branch.name}}</mat-option>
+                                            </mat-select>
+                                            <mat-error>Branch
+                                                is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please select
+                                                <strong>Branch</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-6  col-md-6  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <mat-label>Choose Category</mat-label>
+                                            <mat-select formControlName="categoryID">
+                                                <mat-option *ngFor="let category of allCategories"
+                                                    [value]="category.categoryID">
+                                                    {{category.categoryName}}</mat-option>
+                                            </mat-select>
+                                            <mat-error>Category
+                                                is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please select
+                                                <strong>Category</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-md-12 kt-margin-bottom-20-mobile">
+                                        <div formArrayName="categoryDetails">
+                                            <button mat-icon-button color="primary" matTooltip="Add Category Details"
+                                                type="button" (click)="addNewCategoryDetails()"
+                                                *ngIf="PublicPaymentForm.get('categoryDetails').controls.length < 4">
+                                                <mat-icon>add</mat-icon>
+                                            </button>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="border-0 text-uppercase small font-weight-bold">
+                                                            Name</th>
+                                                        <th class="border-0 text-uppercase small font-weight-bold">
+                                                            Quantity</th>
+                                                        <th class="border-0 text-uppercase small font-weight-bold">
+                                                            Price</th>
+                                                        <th>Actions</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody
+                                                    *ngFor="let CurrentGroup of  PublicPaymentForm.get('categoryDetails').controls; let i = index">
+                                                    <tr class="form-group" [formGroupName]="i">
+                                                        <td>
+                                                            <mat-form-field class="mat-form-field-fluid">
+                                                                <input type="text" matInput placeholder="Enter Name"
+                                                                    formControlName="name" />
+
+                                                                <mat-hint align="start">Please enter
+                                                                    <strong>name</strong>
+                                                                </mat-hint>
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field class="mat-form-field-fluid">
+                                                                <input type="text" matInput placeholder="Enter Quantity"
+                                                                    formControlName="Quantity" />
+                                                                <mat-hint align="start">Please enter
+                                                                    <strong>Quantity</strong>
+                                                                </mat-hint>
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <mat-form-field class="mat-form-field-fluid">
+                                                                <input type="number" [min]=0 matInput
+                                                                    placeholder="Enter Price" formControlName="price"
+                                                                    (keyup)="showControls()" />
+                                                                <mat-hint align="start">Please enter
+                                                                    <strong>Price Per One</strong>
+                                                                </mat-hint>
+                                                            </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                            <button mat-icon-button color="primary"
+                                                                matTooltip="Add Group Schedule" type="button"
+                                                                (click)="addItem()"
+                                                                *ngIf="PublicPaymentForm.get('categoryDetails').controls.length < 4">
+                                                                <mat-icon>done</mat-icon>
+                                                            </button>
+                                                            <button mat-icon-button color="warn"
+                                                                matTooltip="Delete Category Details" type="button"
+                                                                (click)="deleteControl(PublicPaymentForm.controls['categoryDetails'].controls[i],i)">
+                                                                <mat-icon>delete</mat-icon>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group kt-form__group row">
+
+
+                                    <div class="col-lg-6  col-md-6  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <mat-label>Choose Transaction Type</mat-label>
+                                            <mat-select formControlName="tranactionType">
+                                                <mat-option value="in">
+                                                    In</mat-option>
+                                                <mat-option value="out">
+                                                    Out</mat-option>
+                                            </mat-select>
+                                            <mat-error>Transaction Type
+                                                is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please select
+                                                <strong>Transaction Type</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-6  col-md-6  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input type="number" [min]=0 matInput placeholder="Enter Paid"
+                                                formControlName="paid" />
+                                            <mat-error>
+                                                Paid is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong> Paid </strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!--end::Form-->
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+    </kt-portlet-body>
+</kt-portlet>

@@ -1,0 +1,170 @@
+<kt-portlet>
+	<!-- PORTLET LOADING | Binded to TABLE Datasource -->
+	<!-- See prop => '~/core/_crud/models/data-sources/_base.datasource.ts' (loading$) -->
+	<kt-portlet-header [title]="'Payment list'" [class]="'kt-portlet__head--lg'">
+
+	</kt-portlet-header>
+	<!-- end::Header -->
+
+	<!-- start::Body (attribute: ktPortletBody) -->
+	<kt-portlet-body>
+		<!-- start::FILTERS & GROUP ACTIONS -->
+		<div class="kt-form__filtration" style="margin:15px"  >
+			
+				<div class="row align-items-center">
+					<div class="col-md-2 kt-margin-bottom-30-mobile" *ngIf="isAdmin">
+						<!-- 'm  margin-bottom-10-mobile' for adaptive make-up  -->
+						<div class="kt-form__control" >
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-label>Choose Branch</mat-label>
+								<mat-select [(ngModel)]="selectedBranch"  (selectionChange)="filterByPramters()">
+									<mat-option [value]="0">All</mat-option>
+									<mat-option *ngFor="let branch of allBranches" [value]="branch.branchID">
+										{{branch.name}}</mat-option>
+								</mat-select>
+								<mat-hint align="start">
+									<strong>Choose Branch</strong> by Branch
+								</mat-hint>
+							</mat-form-field>
+						</div>
+					</div>
+					<div class="col-md-2 kt-margin-bottom-10-mobile">
+						<!-- 'm  margin-bottom-10-mobile' for adaptive make-up  -->
+						<div class="kt-form__control">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput [matDatepicker]="picker" [(ngModel)]="start_date"
+								(ngModelChange)="filterByPramters()" placeholder="Choose Start Date"
+									id="start">
+								<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+								<mat-datepicker #picker></mat-datepicker>
+								<mat-error>Insert
+									<strong>valid date</strong>
+								</mat-error>
+								<mat-hint align="start">Please enter
+									<strong>start-date</strong>
+								</mat-hint>
+							</mat-form-field>
+
+						</div>
+					</div>
+					<div class="col-md-2 kt-margin-bottom-10-mobile"*ngIf="isAdmin" >
+						<div class="kt-form__control">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput [matDatepicker]="picker2" [(ngModel)]="end_date"
+								(ngModelChange)="filterByPramters()" placeholder="Choose End Date" >
+								<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+								<mat-datepicker #picker2></mat-datepicker>
+								<mat-error>Insert
+									<strong>valid date</strong>
+								</mat-error>
+								<mat-hint align="start">Please enter
+									<strong>end-date</strong>
+								</mat-hint>
+							</mat-form-field>
+						</div>
+					</div>
+
+					<div class="col-md-2 kt-margin-bottom-10-mobile">
+
+						<div class="kt-form__control"  *ngIf="(paymentList&&paymentList.length>0)">
+							<button (click)="findPayment()" mat-raised-button matTooltip="Find your billing" color="primary"
+								type="button">
+								<span>Find Payment</span> 
+							</button>
+						</div>
+					</div>
+
+				</div>
+			
+		</div> 
+		<!-- end::FILTERS & GROUP ACTIONS -->
+
+		<!-- MATERIAL TABLE | Binded to datasources -->
+		<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+		<div class="mat-table__wrapper">
+			<mat-table class="lmat-elevation-z8" #table [dataSource]="dataSource" matSort>
+				<!-- Checkbox Column -->
+
+				<!-- Table with selection -->
+
+
+				<ng-container matColumnDef="paymentID">
+					<!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+					<mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+					<mat-cell *matCellDef="let payment">{{payment.paymentID}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="studentID">
+					<!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+					<mat-header-cell *matHeaderCellDef mat-sort-header>studentID</mat-header-cell>
+					<mat-cell *matCellDef="let payment">{{payment.studentID}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="studentName">
+					<!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Student Name</mat-header-cell>
+					<mat-cell *matCellDef="let payment">{{getStudentName(payment.studentID)}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="employee">
+					<!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Employee</mat-header-cell>
+					<mat-cell *matCellDef="let payment">{{getEmployeeName(payment.employeeID)}}</mat-cell>
+				</ng-container>
+
+
+				<ng-container matColumnDef="branch">
+					<!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Branch</mat-header-cell>
+					<mat-cell *matCellDef="let payment">{{getBranchName(payment.branchID)}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="paid">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Paid</mat-header-cell>
+					<mat-cell *matCellDef="let payment">{{payment.paid}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="creationDate">
+		 			<mat-header-cell *matHeaderCellDef mat-sort-header>Creation Date</mat-header-cell>
+					<mat-cell *matCellDef="let payment">{{payment.creationDate| date:'dd/MM/yyyy  hh:mm:a'}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="paymentType">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>paymentType</mat-header-cell>
+					<mat-cell *matCellDef="let payment">{{payment.paymentType|titlecase}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="tranactionType">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>tranactionType</mat-header-cell>
+
+					<mat-cell *matCellDef="let payment">
+						<span *ngIf="payment.tranactionType=='in'"
+							class="kt-badge kt-badge--inline kt-badge--pill kt-badge--success kt-badge--wide">{{payment.tranactionType}}</span>
+						<span *ngIf="payment.tranactionType=='out'"
+							class="kt-badge kt-badge--inline kt-badge--pill kt-badge--danger kt-badge--wide">{{payment.tranactionType}}</span>
+					</mat-cell>
+
+				</ng-container>
+
+
+				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+				<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+			</mat-table>
+			<div class="mat-table__message" *ngIf="paymentList!=null&&paymentList.length==0">No records found</div>
+			<!-- Message for empty data  -->
+			<div class="mat-table__message" *ngIf="paymentList==null">Please wait....</div>
+		</div>
+
+		<!-- start: BOTTOM -->
+		<div class="mat-table__bottom">
+			<!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
+			<!-- <mat-spinner [diameter]="20" *ngIf="dataSource==null"></mat-spinner> -->
+			<!-- MATERIAL PAGINATOR | Binded to dasources -->
+			<!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
+			<mat-paginator [pageSize]="10" [pageSizeOptions]="[3, 5, 10]"></mat-paginator>
+		</div>
+		<!-- end: BOTTOM -->
+	</kt-portlet-body>
+	<!-- end::Body -->
+</kt-portlet>

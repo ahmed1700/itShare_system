@@ -1,0 +1,48 @@
+<div class="kt-portlet">
+        <div class="kt-portlet__head kt-portlet__head__custom">
+            <div class="kt-portlet__head-progress">
+                <!-- here can place a progress bar-->
+                <kt-alert *ngIf="errorMessage" type="warn" [showCloseButton]="true" (close)="onAlertClose($event)">
+                    {{errorMessage}}
+                </kt-alert>
+               
+            </div>
+            <div class="kt-portlet__head-label">
+                <h3 class="kt-portlet__head-title">Terms And Codition</h3>
+                <span class="kt-portlet__head-icon kt-hide">
+                    <i class="la la-gear"></i>
+                </span>
+            </div>
+        </div>
+        <div class="kt-form">
+            <div class="kt-portlet__body">
+                <div>
+                    <form [formGroup]="TermsForm" class="kt-form kt-form--group-seperator-dashed">
+                        <div class="form-group kt-form__group row">
+                            <div class="col-xl-6 col-lg-6 col-sm-12 col-md-6 kt-margin-bottom-20-mobile">
+                                <mat-form-field class="mat-form-field-fluid">
+                                        <input matInput placeholder="Enter Term" formControlName="terms" />
+                                    
+                                    <mat-error>Please Enter
+                                        <strong>Term</strong>
+                                    </mat-error>
+                                    <mat-hint align="start">Please select
+                                        <strong>Term</strong>
+                                    </mat-hint>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="kt-portlet__foot kt-portlet__no-border kt-portlet__foot--fit text-right">
+                <div class="kt-form__actions kt-form__actions--sm">
+                    <button mat-button (click)="onNoClick()">Cancel</button>&nbsp;
+                    <button mat-button (click)="updateTerms()" color="primary" cdkFocusInitial [disabled]="viewLoading">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    

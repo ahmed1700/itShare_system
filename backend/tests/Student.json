@@ -1,0 +1,18 @@
+/*post*/
+{
+    "creationDate": "2019-10-12T15:44:02.284Z",
+    "_id": "5da320f4e4e84d0a1cadf88e",
+    "employeeID": 1,
+    "fullNameArabic": "عطيه محمد عطيه",
+    "fullNameEnglish": "atyamohammedatya",
+    "nationalID": "29070242103373",
+    "mobile1": "01153176051",
+    "mobile2": "01028807275",
+    "email": "atya@ijas.com",
+    "gender": "male",
+    "studentsType": "univeristy",
+    "city": "Cairo",
+    "address": "21 street",
+    "studentID": 1,
+    "__v": 0
+}

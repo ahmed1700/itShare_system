@@ -1,0 +1,104 @@
+<kt-portlet>
+    <kt-portlet-header [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+        <ng-container ktPortletTools>
+            <a [routerLink]="['/tracks']" class="btn btn-secondary kt-margin-r-10" mat-raised-button
+                matTooltip="Back to the tracks list">
+                <i class="la la-arrow-left"></i>
+                <span class="kt-hidden-mobile">Back</span>
+            </a>
+            <a href="javascript:;" class="btn btn-secondary kt-margin-r-10" (click)="reset()"
+                [disabled]="selectedTab !== 0" mat-raised-button matTooltip="Reset changes">
+                <i class="la la-cog"></i>
+                <span class="kt-hidden-mobile">Reset</span>
+            </a>
+            <a href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="onSumbit(true)"
+                mat-raised-button matTooltip="Save & Continue">
+                <span>Save</span>
+            </a>
+        </ng-container>
+    </kt-portlet-header>
+
+    <kt-portlet-body>
+        <mat-tab-group [(selectedIndex)]="selectedTab">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <i class="mat-tab-label-icon fa fa-user"></i>
+                    Basic info
+                </ng-template>
+                <ng-template matTabContent>
+                    <!--begin::Form-->
+                    <div *ngIf="track">
+                        <form [formGroup]="trackForm" class="kt-form kt-form--group-seperator-dashed">
+
+                            <kt-alert *ngIf="errorMessage" type="warn" [showCloseButton]="true" [duration]="10000"
+                                (close)="onAlertClose($event)">
+                                {{errorMessage}}
+                            </kt-alert>
+                            <div class="kt-form__section kt-form__section--first">
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-6  col-md-6  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput  placeholder="Enter Track Name"
+                                                formControlName="trackName" />
+                                            <mat-error *ngIf="trackForm.controls['trackName'].errors?.required">Track Name is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>Track Name</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-6  col-md-6  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter Track Hours"
+                                                formControlName="trackHours" />
+                                                <mat-error *ngIf="trackForm.controls['trackHours'].errors?.required">Track Hours is
+                                                        <strong>required</strong>
+                                                </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>Track Hours</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div> 
+                                     
+                                </div>
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-6  col-md-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <textarea matInput placeholder="Enter Track Outline"
+                                                formControlName="trackOutline" ></textarea>
+                                            <mat-error> Track Outline is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong> Track Outline</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-6  col-md-6  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter price " formControlName="price" />
+                                            <mat-error *ngIf="trackForm.controls['price'].errors?.required">price  is
+                                                    <strong>required</strong>
+                                            </mat-error>
+                                            <mat-error *ngIf="trackForm.controls['price'].errors?.pattern||trackForm.controls['price'].errors?.rangeLength">Please enter
+                                                    <strong>valid price </strong>
+                                        </mat-error >
+                                            <mat-hint align="start">Please enter
+                                                <strong>price</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!--end::Form-->
+                </ng-template>
+            </mat-tab>
+          
+          
+
+        </mat-tab-group>
+    </kt-portlet-body>
+</kt-portlet>

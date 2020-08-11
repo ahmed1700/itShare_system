@@ -1,0 +1,201 @@
+<kt-alert *ngIf="errorMessage" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+    {{errorMessage}}
+</kt-alert>
+<div #billingFile id="billingFile" *ngIf="assignStudentDetails&&studentDetails">
+    <div class="header-container">
+        <div>
+            <img src="assets/media/logos/it.png"
+                width="130px" height="130px">
+        </div>
+        <div>
+            <h5>ITShare training center ,{{branchName}}</h5>
+        </div> 
+    </div>
+
+    <div class="body-container kt-invoice__body">
+        <div class="kt-invoice__items">
+            <h6 style="font-weight:bold;text-align:center">Student Information</h6>
+
+            <div class="kt-invoice__item ">
+                <span
+                    style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">NAME:</span>
+                <span>{{studentDetails.fullNameEnglish}}</span>
+            </div>
+            <div class="kt-invoice__item">
+                <span style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">TELEPHONE
+                    :</span>
+                <span>{{studentDetails.mobile1}}</span>
+            </div>
+            <div class="kt-invoice__item">
+                <span style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">EMAIL
+                    :</span>
+                <span>{{studentDetails.email}}</span>
+            </div>
+            <div class="kt-invoice__item">
+                <span style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">ASSIGN
+                    STUDENT ID :</span>
+                <span>{{assignStudentID}}</span>
+            </div>
+        </div>
+        <div class="kt-invoice__items">
+            <h6 style="font-weight:bold;text-align:center">Assign Information</h6>
+
+            <div class="kt-invoice__item">
+                <span
+                    style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">Course:</span>
+                <span>{{cousreName}}</span>
+            </div>
+            <div class="kt-invoice__item" *ngIf="courseTracks.length>0">
+                <span style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">Course
+                    Tracks :</span>
+                <span *ngFor="let course of courseTracks">{{course}}/</span>
+            </div>
+            <div class="kt-invoice__item">
+                <span style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">Group
+                    :</span>
+                <span>{{groupName}}</span>
+            </div>
+        </div>
+        <div class="kt-invoice__items" *ngIf="invoiceDetails">
+            <h6 style="font-weight:bold;text-align:center">Payment Information</h6>
+
+            <div class="kt-invoice__item">
+                <span
+                    style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">DATE:</span>
+                <span>{{invoiceDetails.creationDate| date: 'dd/MM/yyyy'}}</span>
+            </div>
+            <div class="kt-invoice__item">
+                <span style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">TIME
+                    :</span>
+                <span>{{invoiceDetails.creationDate| date: 'hh:mm a'}}</span>
+            </div>
+            <div class="kt-invoice__item">
+                <span style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">INVOICE
+                    NUMBER :</span>
+                <span>{{invoiceDetails.paymentID}}</span>
+            </div>
+            <div class="kt-invoice__item">
+                <span style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">TRANSACTION
+                    TYPE :</span>
+                <span>{{invoiceDetails.tranactionType}}</span>
+            </div>
+            <div class="kt-invoice__item">
+                <span style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">PAYMENT
+                    TYPE :</span>
+                <span>{{invoiceDetails.paymentType}}</span>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="kt-invoice__body" *ngIf="tracks">
+        <div class="kt-invoice__container">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>TRACKNAME</th>
+                            <th>HOURS</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let track of tracks">
+                            <td>{{track.trackName}}</td>
+                            <td>{{track.trackHours}}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="kt-invoice__body" *ngIf="groupScheduel">
+        <div class="kt-invoice__container">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>GROUP DAYS</th>
+                            <th>FROM</th>
+                            <th>TO</th>
+
+                        </tr>
+                    </thead>
+                    <tbody *ngFor=" let groupScheduel of groupScheduel">
+                        <tr>
+                            <td>{{groupScheduel.days}}</td>
+                            <td>{{groupScheduel.Hourfrom}}</td>
+                            <td>{{groupScheduel.Hourto}}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="kt-invoice__body" *ngIf="allCondition">
+        <div class="kt-invoice__container">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead >
+                        <tr >
+                            
+
+                            <th style="direction:rtl;padding-right:10px;text-align:center" colspan="2">
+                                <h5><b>الشروط والاحكام</b></h5>
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody *ngFor=" let allCondition of allCondition" style="direction:rtl;padding-right:15px">
+                        <tr >
+                           <td></td>
+                            <td style="direction:rtl;padding-right:10px;text-align: right"> {{allCondition.termsID}} - {{allCondition.Terms}}</td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="kt-invoice__footer">
+        <div class="kt-invoice__container">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>EMPLOYEE</th>
+                            <th *ngIf="invoiceDetails">CURRENT PAID</th>
+                            <th> TOTAL PAID</th>
+                            <th>REMAINING</th>
+                            <th>TOTAL PAYMENT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{emloyeeName}}</td>
+                            <td *ngIf="invoiceDetails">{{invoiceDetails.paid}}</td>
+                            <td>{{paid}}</td>
+                            <td>{{remaining}}</td>
+                            <td class="kt-font-danger kt-font-xl kt-font-boldest">
+                                {{assignStudentDetails.totalPayment}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="kt-invoice__actions">
+    <div class="kt-invoice__container">
+        <button style="margin:10px" type="button" class="btn btn-brand btn-bold" (click)="print()">Print
+            Invoice</button>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+﻿api  sigin 
+constrains :-course is working and day is match and no of teachd hours is less or equal than course hours
+
+
+
+------------------
+puts signout
+:course is working and day is match and hours and the sign in is set 
+
+set teachedHours 
+if( difference between sigout - siginn )  and no of teached hours is less course hours ---> 4
+
+
+else if if( difference between sigout - siginn )  and no of course hours  no of teached hours is less course hours -  ---> 2
+set teached hours  = no of course hours  no of teached hours is less course hours 
+ no of teachd hours is less or equal than course
+

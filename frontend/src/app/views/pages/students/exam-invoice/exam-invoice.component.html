@@ -1,0 +1,101 @@
+<kt-alert *ngIf="errorMessage" type="warn" [showCloseButton]="true" [duration]="10000" (close)="onAlertClose($event)">
+        {{errorMessage}}
+    </kt-alert>
+    <div #billingFile id="billingFile" *ngIf="assignStudentDetails&&studentDetails">
+        <div class="header-container">
+            <div>
+                    <img
+                    src="assets/media/logos/it.png"
+                    width="130px" height="130px">
+            </div>
+            <div>
+                <h5>ITShare training center ,{{branchName}}</h5>
+            </div>
+        </div>
+         
+      <div class="body-container kt-invoice__body">
+            <div class="kt-invoice__items">
+                <h6 style="font-weight:bold;text-align:center">Student Information</h6>
+                    
+                    <div class="kt-invoice__item ">
+                        <span  style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">NAME:</span>
+                        <span >{{studentDetails.fullNameEnglish}}</span>
+                    </div>
+                    <div class="kt-invoice__item">
+                        <span  style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">TELEPHONE :</span>
+                        <span>{{studentDetails.mobile1}}</span>
+                    </div>
+                    <div class="kt-invoice__item">
+                            <span  style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">EMAIL :</span>
+                            <span >{{studentDetails.email}}</span>
+                    </div>
+                    <div class="kt-invoice__item">
+                        <span  style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">ASSIGN STUDENT ID :</span>
+                        <span >{{assignStudentID}}</span>
+                </div>
+            </div>
+            <div class="kt-invoice__items">
+                    <h6 style="font-weight:bold;text-align:center">Assign Information</h6>
+                        
+                        <div class="kt-invoice__item">
+                            <span  style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">Exam:</span>
+                            <span >{{examName}}</span>
+                        </div>
+                        
+                </div>
+                <div class="kt-invoice__items" >
+                        <h6 style="font-weight:bold;text-align:center">Payment Information</h6>
+                            
+                            <div class="kt-invoice__item">
+                                <span  style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">DATE:</span>
+                                <span >{{assignStudentDetails.creationDate| date: 'dd/MM/yyyy'}}</span>
+                            </div>
+                            <div class="kt-invoice__item">
+                                <span  style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">TIME :</span>
+                                <span>{{assignStudentDetails.creationDate| date: 'hh:mm a'}}</span>
+                            </div>
+                            
+                            
+                         <div class="kt-invoice__item">
+                            <span  style="margin:5px;font-family: 'Roboto', sans-serif;font-size: 13px;font-weight:bold;">PAYMENT TYPE :</span>
+                            <span >{{assignStudentDetails.paymentType}}</span>
+                     </div>
+                    </div>
+      </div>
+                   
+        
+        
+    
+
+        <div class="kt-invoice__footer">
+            <div class="kt-invoice__container">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>EMPLOYEE</th>
+                               
+                                <th>TOTAL PRICE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{emloyeeName}}</td>
+                                <td class="kt-font-danger kt-font-xl kt-font-boldest">
+                                    {{assignStudentDetails.totalPrice}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    
+    
+    </div>
+    
+    <div class="kt-invoice__actions">
+        <div class="kt-invoice__container">
+            <button style="margin:10px" type="button" class="btn btn-brand btn-bold" (click)="print()">Print
+                Invoice</button>
+        </div>
+    </div>

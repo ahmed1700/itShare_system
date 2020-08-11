@@ -1,0 +1,95 @@
+<kt-portlet>
+	<!-- PORTLET LOADING | Binded to TABLE Datasource -->
+	<!-- See prop => '~/core/_crud/models/data-sources/_base.datasource.ts' (loading$) -->
+	<kt-portlet-header [title]="'student exams list'" [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTools>
+			<a [routerLink]="['/students']" class="btn btn-secondary kt-margin-r-10" mat-raised-button
+				matTooltip="Back to the users list">
+				<i class="la la-arrow-left"></i>
+				<span class="kt-hidden-mobile">Back</span>
+			</a>
+			<button (click)="NewAssign()" mat-raised-button color="primary" matTooltip="Create new Assign">New
+				assign</button>
+			
+		</ng-container>
+	</kt-portlet-header>
+
+
+	<!-- end::Header -->
+
+	<!-- start::Body (attribute: ktPortletBody) -->
+	<kt-portlet-body>
+
+
+		<!-- MATERIAL TABLE | Binded to datasources -->
+		<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+		<div class="mat-table__wrapper">
+			<mat-table class="lmat-elevation-z8" #table [dataSource]="dataSource" matSort>
+				<!-- Checkbox Column -->
+
+				<!-- Table with selection -->
+				<!-- https://run.stackblitz.com/api/angular/v1?file=app%2Ftable-selection-example.ts -->
+
+
+				<ng-container matColumnDef="ID">
+					<!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+					<mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+					<mat-cell *matCellDef="let student">{{student.studentExamID}}</mat-cell>
+				</ng-container>
+
+
+
+				<ng-container matColumnDef="Exame">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Exame</mat-header-cell>
+					<mat-cell *matCellDef="let student">{{getExamName(student.examID)}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="Code">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Code</mat-header-cell>
+	 				<mat-cell *matCellDef="let student">{{student.code}}</mat-cell>
+				</ng-container>
+				 
+			
+				<ng-container matColumnDef="Price">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+					<mat-cell *matCellDef="let student">{{student.totalPrice}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="Payment">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Payment</mat-header-cell>
+					<mat-cell *matCellDef="let student">{{student.paymentType}}</mat-cell>
+				</ng-container>
+
+                 <ng-container matColumnDef="actions">
+						<mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+						<mat-cell *matCellDef="let student">
+							<button (click)="viewStudentBilling(student)" mat-icon-button color="primary"
+								matTooltip="View student payment">
+								<mat-icon>archive</mat-icon>
+							</button>&nbsp;
+							
+						</mat-cell>
+					</ng-container>
+			
+				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+				<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+			</mat-table>
+			<div class="mat-table__message" *ngIf="ExamStudentList!=null&&ExamStudentList.length==0">This student
+				not assigned to any exam</div>
+			<!-- Message for empty data  -->
+			<div class="mat-table__message" *ngIf="ExamStudentList==null">Please wait....</div>
+		</div>
+
+		<!-- start: BOTTOM -->
+		<div class="mat-table__bottom">
+			<!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
+			<!-- <mat-spinner [diameter]="20" *ngIf="dataSource==null"></mat-spinner> -->
+			<!-- MATERIAL PAGINATOR | Binded to dasources -->
+			<!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
+			<mat-paginator [pageSize]="10" [pageSizeOptions]="[3, 5, 10]"></mat-paginator>
+		</div>
+		<!-- end: BOTTOM -->
+	</kt-portlet-body>
+	<!-- end::Body -->
+</kt-portlet>

@@ -1,0 +1,214 @@
+<kt-portlet>
+	<!-- PORTLET LOADING | Binded to TABLE Datasource -->
+	<!-- See prop => '~/core/_crud/models/data-sources/_base.datasource.ts' (loading$) -->
+	<kt-portlet-header [title]="'TeachingAtteandance list'" [class]="'kt-portlet__head--lg'" >
+		<ng-container ktPortletTools>
+			<!--<button [routerLink]="['./add']" mat-raised-button color="primary" matTooltip="Create new TeachingAtteandance">New TeachingAtteandance</button>-->
+			<!-- Buttons (Material Angular) | See off.documenations 'https://material.angular.io/components/button/overview' -->
+			<!-- mat-raised-button | Rectangular contained button w/ elevation  -->
+		</ng-container>
+	</kt-portlet-header>
+	<!-- end::Header -->
+
+	<!-- start::Body (attribute: ktPortletBody) -->
+	<kt-portlet-body>
+		<!-- start::FILTERS & GROUP ACTIONS -->
+		<div class="kt-form kt-margin-b-50">
+			<!-- start::FILTERS -->
+			<div class="kt-form__filtration">
+				<div class="row align-items-center">
+						<div class="col-md-2 kt-margin-bottom-30-mobile">
+								<!-- 'm  margin-bottom-10-mobile' for adaptive make-up  -->
+								<div class="kt-form__control">
+									<mat-form-field class="mat-form-field-fluid">
+											<mat-label>Choose Group</mat-label>
+										<mat-select [(ngModel)]="selectedGroup"  (selectionChange)="filterByGroup()">
+											<mat-option value="">ALL</mat-option>
+											<mat-option *ngFor="let group of allGroups"  [value]="group.groupID" >{{group.groupName}}</mat-option>
+										</mat-select>
+										<mat-hint align="start">
+											<strong>Filter</strong> by Group
+										</mat-hint>
+									</mat-form-field>
+								</div>
+							</div>
+		
+							<div class="col-md-2 kt-margin-bottom-30-mobile">
+		
+								<div class="kt-form__control">
+									<mat-form-field class="mat-form-field-fluid">
+										    <mat-label>Choose Trainers</mat-label>
+											<mat-select [(ngModel)]="selectedTrainer"  (selectionChange)="filterByTrainer()">
+													<mat-option value="">ALL</mat-option>
+													<mat-option *ngFor="let trainer of allTrainers"  [value]="trainer.trainerID" >{{trainer.fullNameArabic}}</mat-option>
+												</mat-select>
+										<mat-hint align="start">
+											<strong>Filter</strong> by Trainers
+										</mat-hint>
+									</mat-form-field>
+								</div>
+                            </div>
+                            <div class="col-md-2 kt-margin-bottom-30-mobile">
+		
+								<div class="kt-form__control">
+									<mat-form-field class="mat-form-field-fluid">
+										    <mat-label>Choose Tracks</mat-label>
+											<mat-select [(ngModel)]="selectedTrack"  (selectionChange)="filterByTrack()">
+													<mat-option value="">ALL</mat-option>
+													<mat-option *ngFor="let track of allTrack"  [value]="track.trackID" >{{track.trackName}}</mat-option>
+												</mat-select>
+										<mat-hint align="start">
+											<strong>Filter</strong> by Tracks
+										</mat-hint>
+									</mat-form-field>
+								</div>
+                            </div>
+                            <div class="col-md-2 kt-margin-bottom-30-mobile">
+		
+								<div class="kt-form__control">
+									<mat-form-field class="mat-form-field-fluid">
+										    <mat-label>Choose Courses</mat-label>
+											<mat-select [(ngModel)]="selectedCourse"  (selectionChange)="filterByCourse()">
+													<mat-option value="">ALL</mat-option>
+													<mat-option *ngFor="let course of allCourses"  [value]="course.courseID" >{{course.courseName}}</mat-option>
+												</mat-select>
+										<mat-hint align="start">
+											<strong>Filter</strong> by Courses
+										</mat-hint>
+									</mat-form-field>
+								</div>
+							</div>
+					<div class="col-md-2 kt-margin-bottom-30-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput placeholder="Search AttendanceData" #searchInput (keyup)="doFilter($event.target.value)" placeholder="Search">
+							<mat-hint align="start">
+								<strong>Search</strong> in all fields
+							</mat-hint>
+						</mat-form-field>
+					</div>
+				</div>
+			</div>
+			<!-- end::FILTERS -->
+
+			<!-- start::GROUP ACTIONS -->
+			<!-- Group actions list: 'Delete selected' | 'Fetch selected' | 'Update status for selected' -->
+			<!-- Group actions are shared for all LISTS -->
+			<div class="row align-items-center collapse kt-form__group-actions kt-margin-top-20 kt-margin-bottom-20"
+				[ngClass]="{'show' : selection.selected.length > 0}"><!-- We show 'Group Actions' div if smth are selected -->
+				<div class="col-xl-12">
+					<div class="kt-form__group kt-form__group--inline">
+						<div class="kt-form__label kt-form__label-no-wrap">
+							<label class="kt--font-bold kt-font-danger-">
+								<span translate="ECOMMERCE.COMMON.SELECTED_RECORDS_COUNT"></span> {{ selection.selected.length }}
+							</label>
+							<!-- selectedCountsTitle => function from codeBehind (students-list.component.ts file) -->
+							<!-- selectedCountsTitle => just returns title of selected items count -->
+							<!-- for example: Selected records count: 4 -->
+						</div>
+                    
+                    <!--	<div class="kt-form__control kt-form__group--inline">
+							<button (click)="fetchِTeachingAttendance()" mat-raised-button matTooltip="Fetch selected TeachingAttendance"  class="mat-button-mt-4">
+								<mat-icon>clear_all</mat-icon>
+								Fetch Selected
+							</button>
+                        </div>
+                        -->
+					</div>
+				</div>
+			</div>
+			<!-- end::GROUP ACTIONS -->
+		</div>
+		<!-- end::FILTERS & GROUP ACTIONS -->
+
+		<!-- MATERIAL TABLE | Binded to datasources -->
+		<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+		<div class="mat-table__wrapper">
+			<mat-table class="lmat-elevation-z8"
+				#table
+				[dataSource]="dataSource"
+				matSort 
+				>
+				<!-- Checkbox Column -->
+
+				<!-- Table with selection -->
+				<!-- https://run.stackblitz.com/api/angular/v1?file=app%2Ftable-selection-example.ts -->
+				<ng-container matColumnDef="select">
+					<mat-header-cell *matHeaderCellDef class="mat-column-checkbox">
+						<mat-checkbox (change)="$event ? masterToggle() : null"
+							[checked]="selection.hasValue() && isAllSelected()"
+							[indeterminate]="selection.hasValue() && !isAllSelected()">
+						</mat-checkbox>
+					</mat-header-cell>
+					<mat-cell *matCellDef="let row" class="mat-column-checkbox">
+						<mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+						</mat-checkbox>
+					</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="teacheingAttendantID">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+					<mat-cell *matCellDef="let teach">{{teach.teacheingAttendantID}}</mat-cell>
+				</ng-container>
+            -
+				<ng-container matColumnDef="GroupName">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Group</mat-header-cell>
+					<mat-cell *matCellDef="let teach">{{teach.GroupName}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="TrainerName">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>Trainer</mat-header-cell>
+						<mat-cell *matCellDef="let teach">{{teach.TrainerName}}</mat-cell>
+                </ng-container>
+
+				<ng-container matColumnDef="TrackName">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Track</mat-header-cell>
+					
+						<mat-cell *matCellDef="let teach">{{teach.TrackName}}</mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="CourseName">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>Course</mat-header-cell>
+						<mat-cell *matCellDef="let teach">{{teach.CourseName}}</mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="TotalHours">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>TotalHours</mat-header-cell>
+						<mat-cell *matCellDef="let teach">{{teach.TotalHours}}</mat-cell>
+				</ng-container>
+
+                <ng-container matColumnDef="ActualHours">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>ActualHours</mat-header-cell>
+						<mat-cell *matCellDef="let teach">{{teach.ActualHours}}</mat-cell>
+                </ng-container>
+                
+				<ng-container matColumnDef="actions">
+					<mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+					<mat-cell *matCellDef="let employee">
+						<button (click)="editEmployee(employee.employeeID)" mat-icon-button color="primary" matTooltip="Edit employee">
+							<mat-icon>create</mat-icon>
+						</button>&nbsp;
+
+						
+					</mat-cell>
+				</ng-container>
+				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+				<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+			</mat-table>
+			<div class="mat-table__message" *ngIf="teachingAttendanceResult!=null&&teachingAttendanceResult.length==0">No TeachingAttendance Found</div><!-- Message for empty data  -->
+			<div class="mat-table__message" *ngIf="teachingAttendanceResult==null">Please wait....</div>
+		</div>
+
+		<!-- start: BOTTOM -->
+		<div class="mat-table__bottom">
+			<!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
+			<!-- <mat-spinner [diameter]="20" *ngIf="dataSource==null"></mat-spinner> -->
+			<!-- MATERIAL PAGINATOR | Binded to dasources -->
+			<!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
+			<mat-paginator [pageSize]="10" [pageSizeOptions]="[3, 5, 10]"  ></mat-paginator>
+		</div>
+		<!-- end: BOTTOM -->
+	</kt-portlet-body>
+	<!-- end::Body -->
+</kt-portlet>
+

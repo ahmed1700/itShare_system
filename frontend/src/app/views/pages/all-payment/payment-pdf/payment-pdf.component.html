@@ -1,0 +1,81 @@
+<kt-alert *ngIf="noPayment" type="warn">
+    {{noPayment}}
+</kt-alert>
+<div #billingFile id="billingFile" *ngIf="allPublicPayments">
+    <div class="header-container">
+        <div>
+            <img src="assets/media/logos/it.png"
+                width="130px" height="130px">
+        </div>
+        <div>
+            <h5> All Payment Report :<span><span *ngIf="!end_date&&branch">For</span><span *ngIf="start_day&&end_date">From:</span> {{start_day|date}}</span><span *ngIf="end_date">To: {{end_date|date}} </span><span *ngIf="branch">Branch {{getBranchName(branch)}} </span><span *ngIf="!branch"> For all branches </span></h5>
+        </div>
+    </div>
+ 
+    <div class="kt-invoice__body" *ngIf="allPublicPayments">
+        <div class="kt-invoice__container">
+            <div class="table-responsive">
+                <table class="table">
+                    <!-- <thead> -->
+                        <!-- <tr>
+                          
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th> 
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr> -->
+                    <!-- </thead> -->
+                    <tbody>
+                        <tr >
+                            <th scope="row">Courses Paid</th>
+                            <td>{{allPublicPayments.coursesInput}}</td>
+                            
+                        </tr>
+                        <tr>
+                                <th scope="row">Courses Refund</th>
+                                <td>{{allPublicPayments.coursesOutput}}</td>
+                        </tr>
+                        <tr>
+                                <th scope="row">Courses Profit</th>
+                                <td>{{allPublicPayments.corsesProfit}}</td>
+                        </tr>
+                        <tr>
+                                <th scope="row">Public Payment In</th>
+                                <td>{{allPublicPayments.publicInput}}</td>
+                        </tr>
+                        <tr>
+                                <th scope="row">Public Payment Out</th>
+                                <td>{{allPublicPayments.publicOutput}}</td>
+                        </tr>
+                       
+                        <!-- <tr>
+                                <th scope="row">Exams Original Price</th>
+                                <td>{{allPublicPayments.examsOriginalPrice}}</td>
+                        </tr>
+                        <tr>
+                                <th scope="row">Exams Selling Price</th>
+                                <td>{{allPublicPayments.examsSellingPrice}}</td>
+                        </tr>
+                        <tr>
+                                <th scope="row">Exams Profit</th>
+                                <td>{{allPublicPayments.examProfit}}</td>
+                        </tr>
+                         -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="kt-invoice__actions">
+    <div class="kt-invoice__container">
+        <button style="margin:10px" type="button" class="btn btn-brand btn-bold" (click)="print()">Print
+            Invoice</button>
+    </div>
+</div>

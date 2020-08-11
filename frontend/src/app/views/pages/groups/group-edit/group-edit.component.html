@@ -1,0 +1,368 @@
+<kt-portlet>
+    <kt-portlet-header [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+        <ng-container ktPortletTools>
+            <a [routerLink]="['/groups']" class="btn btn-secondary kt-margin-r-10" mat-raised-button
+                matTooltip="Back to the groups list">
+                <i class="la la-arrow-left"></i>
+                <span class="kt-hidden-mobile">Back</span>
+            </a>
+            <a href="javascript:;" class="btn btn-secondary kt-margin-r-10" (click)="reset()"
+                [disabled]="selectedTab !== 0" mat-raised-button matTooltip="Reset changes">
+                <i class="la la-cog"></i>
+                <span class="kt-hidden-mobile">Reset</span>
+            </a>
+            <a href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="onSumbit(true)"
+                mat-raised-button matTooltip="Save & Continue">
+                <span>Save</span>
+            </a>
+        </ng-container>
+    </kt-portlet-header>
+
+    <kt-portlet-body>
+        <mat-tab-group [(selectedIndex)]="selectedTab">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <i class="mat-tab-label-icon fa fa-user"></i>
+                    Basic info
+                </ng-template>
+                <ng-template matTabContent>
+                    <!--begin::Form-->
+                    <div *ngIf="group">
+                        <form [formGroup]="groupForm" class="kt-form kt-form--group-seperator-dashed">
+
+                            <kt-alert *ngIf="errorMessage" type="warn" [showCloseButton]="true" [duration]="10000"
+                                (close)="onAlertClose($event)">
+                                {{errorMessage}}
+                            </kt-alert>
+                            <div class="kt-form__section kt-form__section--first">
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-6  col-md-6  col-sm-4 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput [matDatepicker]="picker" placeholder="Choose Start Date"
+                                                formControlName="groupStartDate" />
+                                            <mat-error *ngIf="groupForm.controls['groupStartDate'].errors?.required">
+                                                group Start Date
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker></mat-datepicker>
+                                            <mat-hint align="start">Please enter
+                                                <strong>group Start Date</strong> in 'mm/dd/yyyy' format</mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-6  col-md-6  col-sm-4 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <mat-label>Choose Course</mat-label>
+                                            <mat-select formControlName="courseID" [(ngModel)]="selectedCourse"
+                                                (selectionChange)="filterByCourse()">
+                                                <mat-option *ngFor="let course of allCourses" [value]="course.courseID">
+                                                    {{course.courseName}}</mat-option>
+                                            </mat-select>
+                                            <mat-error>Please select
+                                                <strong>course</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please select
+                                                <strong>course</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="form-group kt-form__group row">
+
+                                    <div class="col-lg-6  col-md-6  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <mat-label>Choose Group Type</mat-label>
+                                            <mat-select formControlName="groupType" [(ngModel)]="selectedgroupType">
+                                                <mat-option *ngFor="let gtype of groupType" [value]="gtype">{{gtype}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>Group Type is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please choose
+                                                <strong>Group Type</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-6  col-md-6  col-sm-6 kt-margin-bottom-20-mobile"
+                                        *ngIf="selectedgroupType!='Online'">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <mat-label>Choose Group Class</mat-label>
+                                            <mat-select formControlName="class">
+                                                <mat-option *ngFor="let c of class" [value]="c">{{c}}</mat-option>
+                                            </mat-select>
+                                            <mat-hint align="start">Please choose
+                                                <strong>Group class</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="form-group kt-form__group row">
+
+                                    <div class="col-lg-6  col-md-6  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <mat-label>Choose Group Status</mat-label>
+                                            <mat-select formControlName="groupStatus">
+                                                <mat-option *ngFor="let gstatus of groupStatus" [value]="gstatus">
+                                                    {{gstatus}}</mat-option>
+                                            </mat-select>
+                                            <mat-error>Group Status is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please choose
+                                                <strong>Group Status</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-6  col-md-6  col-sm-6 kt-margin-bottom-20-mobile"
+                                        *ngIf="isAdmin">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <mat-label>Choose Branch</mat-label>
+                                            <mat-select formControlName="branchID">
+                                                <mat-option *ngFor="let branch of allBranches"
+                                                    [value]="branch.branchID">
+                                                    {{branch.name}}</mat-option>
+                                            </mat-select>
+                                            <mat-error>Branch
+                                                is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please select
+                                                <strong>Branch</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+
+                                </div>
+                                <div class="form-group kt-form__group row">
+                                </div>
+                                <div class="kt-separator kt-separator--dashed"></div>
+                                <div formArrayName="groupSchedule">
+                                    <div>
+                                        <div>
+                                            <div class="form-group kt-form__group row">
+                                                <div class="col-md-12 kt-margin-bottom-20-mobile">
+                                                    <button mat-icon-button color="primary"
+                                                        matTooltip="Add Group Schedule" type="button"
+                                                        (click)="addNewGroupSchedule()"
+                                                        *ngIf="groupForm.get('groupSchedule').controls.length < 4">
+                                                        <mat-icon>add</mat-icon>
+                                                    </button>
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th
+                                                                    class="border-0 text-uppercase small font-weight-bold">
+                                                                    days</th>
+                                                                <th
+                                                                    class="border-0 text-uppercase small font-weight-bold">
+                                                                    Hourfrom</th>
+                                                                <th
+                                                                    class="border-0 text-uppercase small font-weight-bold">
+                                                                    Hourto</th>
+                                                                <th>Actions</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody
+                                                            *ngFor="let CurrentGroup of  groupForm.get('groupSchedule').controls; let i = index">
+                                                            <tr [formGroupName]="i">
+                                                                <td>
+                                                                    <mat-form-field class="mat-form-field-fluid">
+                                                                        <mat-label>Choose day</mat-label>
+                                                                        <mat-select formControlName="days">
+                                                                            <mat-option *ngFor="let day of daysList"
+                                                                                [value]="day">{{day}}</mat-option>
+                                                                        </mat-select>
+                                                                        <mat-error>day is
+                                                                            <strong>required</strong>
+                                                                        </mat-error>
+                                                                        <mat-hint align="start">Please choose
+                                                                            <strong>day</strong>
+                                                                        </mat-hint>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                                <td>
+                                                                    <mat-form-field class="mat-form-field-fluid">
+                                                                        <input type="text" matInput
+                                                                            placeholder="Enter Hourfrom" [format]=24
+                                                                            [ngxTimepicker]="picker" name="Hourfrom"
+                                                                            formControlName="Hourfrom" />
+
+
+                                                                        <ngx-material-timepicker #picker>
+                                                                        </ngx-material-timepicker>
+                                                                        <mat-error
+                                                                            *ngIf="groupForm.controls['groupSchedule'].controls[i].controls['Hourfrom'].touched&&groupForm.controls['groupSchedule'].controls[i].controls['Hourfrom'].errors?.required">
+                                                                            Hourfrom is
+                                                                            <strong>required</strong>
+                                                                        </mat-error>
+                                                                        <mat-error
+                                                                            *ngIf="groupForm.controls['groupSchedule'].controls[i].controls['Hourfrom'].touched&&groupForm.controls['groupSchedule'].controls[i].controls['Hourfrom'].errors?.pattern">
+                                                                            Please enter
+                                                                            <strong>Vaild Start Hour</strong>
+                                                                        </mat-error>
+                                                                        <mat-hint align="start">Please enter
+                                                                            <strong>Hourfrom</strong>
+                                                                        </mat-hint>
+                                                                    </mat-form-field>
+                                                                </td>
+
+                                                                <td>
+                                                                    <mat-form-field class="mat-form-field-fluid">
+                                                                        <input type="text" matInput
+                                                                            placeholder="Enter Hourto" [format]=24
+                                                                            [ngxTimepicker]="picker2" name="Hourto"
+                                                                            formControlName="Hourto" />
+                                                                        <ngx-material-timepicker #picker2>
+                                                                        </ngx-material-timepicker>
+                                                                        <mat-error
+                                                                            *ngIf="groupForm.controls['groupSchedule'].controls[i].controls['Hourto'].touched&&groupForm.controls['groupSchedule'].controls[i].controls['Hourto'].errors?.required">
+                                                                            Hourfrom is
+                                                                            <strong>required</strong>
+                                                                        </mat-error>
+                                                                        <mat-error
+                                                                            *ngIf="groupForm.controls['groupSchedule'].controls[i].controls['Hourto'].touched&&groupForm.controls['groupSchedule'].controls[i].controls['Hourto'].errors?.pattern">
+                                                                            Please enter
+                                                                            <strong>Vaild Start Hour</strong>
+                                                                        </mat-error>
+                                                                        <mat-hint align="start">Please enter
+                                                                            <strong>Hourto</strong>
+                                                                        </mat-hint>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                                <td>
+                                                                    <!-- <button mat-icon-button color="primary"
+                                                                        matTooltip="Add Group Schedule" type="button"
+                                                                        (click)="addItem()"
+                                                                        *ngIf="groupForm.get('groupSchedule').controls.length < 4">
+                                                                        <mat-icon>done</mat-icon>
+                                                                    </button> -->
+                                                                    <button mat-icon-button color="warn"
+                                                                        matTooltip="Delete groupSchedule" type="button"
+                                                                        (click)="deleteControl(groupForm.controls['groupSchedule'].controls[i],i)">
+                                                                        <mat-icon>delete</mat-icon>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="kt-separator kt-separator--dashed"></div>
+                                <div formArrayName="groupTracks">
+                                    <div>
+                                        <div>
+                                            <div class="form-group kt-form__group row">
+                                                <div class="col-md-12 kt-margin-bottom-20-mobile">
+                                                    <button mat-icon-button color="primary"
+                                                        matTooltip="Add Group Schedule" type="button"
+                                                        (click)="addNewgroupTracks()"
+                                                        *ngIf="groupForm.get('groupTracks').controls.length < 4">
+                                                        <mat-icon>add</mat-icon>
+                                                    </button>
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th
+                                                                    class="border-0 text-uppercase small font-weight-bold">
+                                                                    track</th>
+                                                                <th
+                                                                    class="border-0 text-uppercase small font-weight-bold">
+                                                                    trainer</th>
+                                                                <th
+                                                                    class="border-0 text-uppercase small font-weight-bold">
+                                                                    trainer price per hour</th>
+                                                                <th>Actions</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody 
+                                                            *ngFor="let CurrentTrack of  groupForm.get('groupTracks').controls; let i = index">
+                                                            <tr [formGroupName]="i">
+                                                                <td>
+                                                                    <mat-form-field class="mat-form-field-fluid">
+                                                                        <mat-label>Choose Track</mat-label>
+                                                                        <mat-select formControlName="trackID">
+                                                                            <mat-option *ngFor="let track of trackList"
+                                                                                [value]="track.trackID">
+                                                                                {{track.trackName}}</mat-option>
+                                                                        </mat-select>
+                                                                        <mat-error>track is
+                                                                            <strong>required</strong>
+                                                                        </mat-error>
+                                                                        <mat-hint align="start">Please choose
+                                                                            <strong>track</strong>
+                                                                        </mat-hint>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                                <td>
+                                                                    <mat-form-field class="mat-form-field-fluid">
+                                                                        <mat-label>Choose Trainer</mat-label>
+                                                                        <mat-select formControlName="trainerID">
+                                                                            <mat-option
+                                                                                *ngFor="let Trainer of trainerList"
+                                                                                [value]="Trainer.trainerID">
+                                                                                {{Trainer.fullNameArabic}}</mat-option>
+                                                                        </mat-select>
+                                                                        <mat-error>Trainer is
+                                                                            <strong>required</strong>
+                                                                        </mat-error>
+                                                                        <mat-hint align="start">Please choose
+                                                                            <strong>Trainer</strong>
+                                                                        </mat-hint>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                                <td>
+                                                                    <mat-form-field class="mat-form-field-fluid">
+
+                                                                        <input matInput
+                                                                            placeholder="Enter Trainer Price Per Hour "
+                                                                            formControlName="trainerPricePerHour" />
+                                                                        <mat-error>Trainer Price Per Hour is
+                                                                            <strong>required</strong>
+                                                                        </mat-error>
+                                                                        <mat-hint align="start">Please choose
+                                                                            <strong>Trainer Price Per Hour</strong>
+                                                                        </mat-hint>
+                                                                    </mat-form-field>
+                                                                </td>
+
+                                                                <td>
+                                                                    <!-- <button mat-icon-button color="primary"
+                                                                        matTooltip="Add Group Schedule" type="button"
+                                                                        (click)="addTrackItem()"
+                                                                        *ngIf="groupForm.get('groupTracks').controls.length < 4">
+                                                                        <mat-icon>done</mat-icon>
+                                                                    </button> -->
+                                                                    <button mat-icon-button color="warn"
+                                                                        matTooltip="Delete group Track" type="button"
+                                                                        (click)="deleteControlTrack(groupForm.controls['groupTracks'].controls[i],i)">
+                                                                        <mat-icon>delete</mat-icon>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!--end::Form-->
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+    </kt-portlet-body>
+</kt-portlet>

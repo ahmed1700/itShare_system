@@ -1,0 +1,89 @@
+<kt-portlet>
+        <!-- PORTLET LOADING | Binded to TABLE Datasource -->
+        <!-- See prop => '~/core/_crud/models/data-sources/_base.datasource.ts' (loading$) -->
+        <kt-portlet-header [title]="'All Payment list'" [class]="'kt-portlet__head--lg'">
+    
+        </kt-portlet-header>
+        <!-- end::Header --> 
+     
+        <!-- start::Body (attribute: ktPortletBody) -->
+        <kt-portlet-body>
+            <!-- start::FILTERS & GROUP ACTIONS -->
+            <div class="kt-form__filtration" style="margin:15px"  >
+                
+                     <div class="row align-items-center">
+                        <div class="col-md-3 kt-margin-bottom-30-mobile" >
+                            <!-- 'm  margin-bottom-10-mobile' for adaptive make-up  -->
+                            <div class="kt-form__control" >
+                                <mat-form-field class="mat-form-field-fluid">
+                                    <mat-label>Choose Branch</mat-label>
+                                    <mat-select [(ngModel)]="selectedBranch">
+                                        <mat-option [value]="0">All</mat-option>
+                                        <mat-option *ngFor="let branch of allBranches" [value]="branch.branchID">
+                                            {{branch.name}}</mat-option>
+                                    </mat-select>
+                                    <mat-hint align="start">
+                                        <strong>Choose Branch</strong> by Branch
+                                    </mat-hint>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-md-3 kt-margin-bottom-10-mobile">
+                            <!-- 'm  margin-bottom-10-mobile' for adaptive make-up  -->
+                            <div class="kt-form__control">
+                                <mat-form-field class="mat-form-field-fluid">
+                                    <input matInput [matDatepicker]="picker" [(ngModel)]="start_date"
+                                     placeholder="Choose Start Date"
+                                        id="start">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                    <mat-error>Insert
+                                        <strong>valid date</strong>
+                                    </mat-error>
+                                    <mat-hint align="start">Please enter
+                                        <strong>start-date</strong>
+                                    </mat-hint>
+                                </mat-form-field>
+    
+                            </div>
+                        </div>
+                        <div class="col-md-3 kt-margin-bottom-10-mobile" >
+                            <div class="kt-form__control">
+                                <mat-form-field class="mat-form-field-fluid">
+                                    <input matInput [matDatepicker]="picker2" [(ngModel)]="end_date"
+                                     placeholder="Choose End Date" >
+                                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker2></mat-datepicker>
+                                    <mat-error>Insert
+                                        <strong>valid date</strong>
+                                    </mat-error>
+                                    <mat-hint align="start">Please enter
+                                        <strong>end-date</strong>
+                                    </mat-hint>
+                                </mat-form-field>
+                            </div>
+                        </div>
+    
+                        <div class="col-md-2 kt-margin-bottom-10-mobile">
+    
+                            <div class="kt-form__control">
+                                <button (click)="findPayment()" mat-raised-button matTooltip="Find your billing" color="primary"
+                                    type="button">
+                                    <span>Find Payment</span>
+                                </button>
+                            </div>
+                        </div>
+    
+                    </div>
+                
+            </div> 
+            <!-- end::FILTERS & GROUP ACTIONS -->
+    
+            <!-- MATERIAL TABLE | Binded to datasources -->
+            <!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+           
+    
+           
+        </kt-portlet-body>
+        <!-- end::Body -->
+    </kt-portlet>

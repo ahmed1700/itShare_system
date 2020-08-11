@@ -1,0 +1,221 @@
+<kt-portlet>
+	<!-- PORTLET LOADING | Binded to TABLE Datasource -->
+	<!-- See prop => '~/core/_crud/models/data-sources/_base.datasource.ts' (loading$) -->
+	<kt-portlet-header [title]="'employees list'" [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTools>
+			<button [routerLink]="['./add']" mat-raised-button color="primary" matTooltip="Create new Employee"
+				*ngIf="isAdmin">New employee</button>
+			<!-- Buttons (Material Angular) | See off.documenations 'https://material.angular.io/components/button/overview' -->
+			<!-- mat-raised-button | Rectangular contained button w/ elevation  -->
+		</ng-container>
+	</kt-portlet-header>
+	<!-- end::Header -->
+
+	<!-- start::Body (attribute: ktPortletBody) -->
+	<kt-portlet-body>
+		<!-- start::FILTERS & GROUP ACTIONS -->
+		<div class="kt-form kt-margin-b-50">
+			<!-- start::FILTERS -->
+			<div class="kt-form__filtration">
+				<div class="row align-items-center">
+					<div class="col-md-4 kt-margin-bottom-30-mobile" *ngIf="isAdmin">
+						<!-- 'm  margin-bottom-10-mobile' for adaptive make-up  -->
+						<div class="kt-form__control">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-label>Choose Branch</mat-label>
+								<mat-select [(ngModel)]="selectedBranch" (selectionChange)="filterByBranch()">
+									<mat-option value="">ALL</mat-option>
+									<mat-option *ngFor="let branch of allBranches" [value]="branch.branchID">
+										{{branch.name}}</mat-option>
+								</mat-select>
+								<mat-hint align="start">
+									<strong>Filter</strong> by Branch
+								</mat-hint>
+							</mat-form-field>
+						</div>
+					</div>
+					<div class="col-md-4 kt-margin-bottom-30-mobile">
+						<div class="kt-form__control">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-label>Choose Month</mat-label>
+								<mat-select [(ngModel)]="selectedMonth" (selectionChange)="filterByMonth()">
+									<mat-option value=1>Jan</mat-option>
+									<mat-option value=2>Feb</mat-option>
+									<mat-option value=3>Mar</mat-option>
+									<mat-option value=4>Apr</mat-option>
+									<mat-option value=5>May</mat-option>
+									<mat-option value=6>Jun</mat-option>
+									<mat-option value=7>Jul</mat-option>
+									<mat-option value=8>Aug</mat-option>
+									<mat-option value=9>Sep</mat-option>
+									<mat-option value=10>Oct</mat-option>
+									<mat-option value=11>Nov</mat-option>
+									<mat-option value=12>Dec</mat-option>
+								</mat-select>
+								<mat-hint align="start">
+									<strong>Filter</strong> Loans By Month
+								</mat-hint>
+							</mat-form-field>
+						</div>
+					</div>
+
+
+					<div class="col-md-2 kt-margin-bottom-30-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput placeholder="Search employee" #searchInput
+								(keyup)="doFilter($event.target.value)" placeholder="Search">
+							<mat-hint align="start">
+								<strong>Search</strong> in all fields
+							</mat-hint>
+						</mat-form-field>
+					</div>
+				</div>
+			</div>
+			<!-- end::FILTERS -->
+
+			<!-- start::GROUP ACTIONS -->
+			<!-- Group actions list: 'Delete selected' | 'Fetch selected' | 'Update status for selected' -->
+			<!-- Group actions are shared for all LISTS -->
+			<div class="row align-items-center collapse kt-form__group-actions kt-margin-top-20 kt-margin-bottom-20"
+				[ngClass]="{'show' : selection.selected.length > 0}">
+				<!-- We show 'Group Actions' div if smth are selected -->
+				<div class="col-xl-12">
+					<div class="kt-form__group kt-form__group--inline">
+						<div class="kt-form__label kt-form__label-no-wrap">
+							<label class="kt--font-bold kt-font-danger-">
+								<span translate="ECOMMERCE.COMMON.SELECTED_RECORDS_COUNT"></span>
+								{{ selection.selected.length }}
+							</label>
+							<!-- selectedCountsTitle => function from codeBehind (students-list.component.ts file) -->
+							<!-- selectedCountsTitle => just returns title of selected items count -->
+							<!-- for example: Selected records count: 4 -->
+						</div>
+						<div class="kt-form__control kt-form__group--inline">
+							<button (click)="fetchEmployees()" mat-raised-button matTooltip="Fetch selected employees"
+								class="mat-button-mt-4">
+								<mat-icon>clear_all</mat-icon>
+								Fetch Selected
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end::GROUP ACTIONS -->
+		</div>
+		<!-- end::FILTERS & GROUP ACTIONS -->
+
+		<!-- MATERIAL TABLE | Binded to datasources -->
+		<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+		<div class="mat-table__wrapper">
+			<mat-table class="lmat-elevation-z8" #table [dataSource]="dataSource" matSort>
+				<!-- Checkbox Column -->
+
+				<!-- Table with selection -->
+				<!-- https://run.stackblitz.com/api/angular/v1?file=app%2Ftable-selection-example.ts -->
+				<ng-container matColumnDef="select">
+					<mat-header-cell *matHeaderCellDef class="mat-column-checkbox">
+						<mat-checkbox (change)="$event ? masterToggle() : null"
+							[checked]="selection.hasValue() && isAllSelected()"
+							[indeterminate]="selection.hasValue() && !isAllSelected()">
+						</mat-checkbox>
+					</mat-header-cell>
+					<mat-cell *matCellDef="let row" class="mat-column-checkbox">
+						<mat-checkbox (click)="$event.stopPropagation()"
+							(change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+						</mat-checkbox>
+					</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="employeeID">
+					<!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+					<mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+					<mat-cell *matCellDef="let employee">{{employee.employeeID}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="fullNameArabic">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>EmployeeName</mat-header-cell>
+					<mat-cell *matCellDef="let employee">{{employee.fullNameArabic}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="branch">
+					<mat-header-cell [hidden]="!isAdmin" *matHeaderCellDef mat-sort-header>Branch</mat-header-cell>
+					<mat-cell [hidden]="!isAdmin" *matCellDef="let employee">{{getBranchName(employee.branchID)}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="salary">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Salary</mat-header-cell>
+
+					<mat-cell *matCellDef="let employee">{{employee.salary}}</mat-cell>
+
+				</ng-container>
+
+				<ng-container matColumnDef="loan">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Loan</mat-header-cell>
+					<mat-cell *matCellDef="let employee">{{getLoanByEmoployeeID(employee.employeeID)}}</mat-cell>
+				</ng-container>
+
+
+				<ng-container matColumnDef="mobile1">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Mobile</mat-header-cell>
+					<mat-cell *matCellDef="let employee">
+						{{employee.mobile1}}
+					</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="role">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Role</mat-header-cell>
+					<mat-cell *matCellDef="let employee">
+						{{employee.role}}
+					</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="status">
+					<mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+					<mat-cell *matCellDef="let employee">
+						<span *ngIf="employee.status=='active'"
+							class="kt-badge kt-badge--inline kt-badge--pill kt-badge--success kt-badge--wide">{{ employee.status |titlecase }}</span>
+						<span *ngIf="employee.status=='deactive'"
+							class="kt-badge kt-badge--inline kt-badge--pill kt-badge--danger kt-badge--wide">{{ employee.status |titlecase }}</span>
+
+					</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="actions">
+					<mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+					<mat-cell *matCellDef="let employee">
+						<button (click)="editEmployee(employee.employeeID)" mat-icon-button color="primary"
+							*ngIf="isAdmin" matTooltip="Edit employee">
+							<mat-icon>create</mat-icon>
+						</button>&nbsp;
+						<button (click)="changePassword(employee.employeeID)" mat-icon-button color="primary"
+							matTooltip="Change Employee Password" *ngIf="isAdmin||changMyPass(employee.employeeID)">
+							<mat-icon>cached</mat-icon>
+						</button>&nbsp;
+						<button (click)="employeeLoan(employee.employeeID)" mat-icon-button color="primary"
+							matTooltip="Loan" *ngIf="isAdmin">
+							<mat-icon>perm_identity</mat-icon>
+						</button>&nbsp;
+					</mat-cell>
+				</ng-container>
+
+				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+				<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+			</mat-table>
+			<div class="mat-table__message" *ngIf="EmployeesResult!=null&&EmployeesResult.length==0">No Employees found
+			</div><!-- Message for empty data  -->
+			<div class="mat-table__message" *ngIf="EmployeesResult==null">Please wait....</div>
+		</div>
+
+		<!-- start: BOTTOM -->
+		<div class="mat-table__bottom">
+			<!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
+			<!-- <mat-spinner [diameter]="20" *ngIf="dataSource==null"></mat-spinner> -->
+			<!-- MATERIAL PAGINATOR | Binded to dasources -->
+			<!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
+			<mat-paginator [pageSize]="10" [pageSizeOptions]="[3, 5, 10]"></mat-paginator>
+		</div>
+		<!-- end: BOTTOM -->
+	</kt-portlet-body>
+	<!-- end::Body -->
+</kt-portlet>

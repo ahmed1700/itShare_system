@@ -1,0 +1,132 @@
+<kt-portlet>
+    <!-- PORTLET LOADING | Binded to TABLE Datasource -->
+    <!-- See prop => '~/core/_crud/models/data-sources/_base.datasource.ts' (loading$) -->
+    <kt-portlet-header [title]="'Exams list'" [class]="'kt-portlet__head--lg'">
+        <ng-container ktPortletTools>
+			<button [routerLink]="['./add']" mat-raised-button color="primary" matTooltip="Create new student">New
+				Exam</button>
+			<!-- Buttons (Material Angular) | See off.documenations 'https://material.angular.io/components/button/overview' -->
+			<!-- mat-raised-button | Rectangular contained button w/ elevation  -->
+		</ng-container>
+    </kt-portlet-header>
+    <!-- end::Header -->
+
+    <!-- start::Body (attribute: ktPortletBody) -->
+    <kt-portlet-body>
+        <!-- start::FILTERS & GROUP ACTIONS -->
+        <div class="kt-form kt-margin-b-50">
+        <div class="kt-form__filtration">
+            <div class="row align-items-center">
+                <div class="col-md-6 kt-margin-bottom-30-mobile">
+                    <!-- 'm  margin-bottom-10-mobile' for adaptive make-up  -->
+                    <div class="kt-form__control">
+                        <mat-form-field class="mat-form-field-fluid">
+                                <mat-label>Choose provider</mat-label>
+                            <mat-select [(ngModel)]="selectedProvider"  (selectionChange)="filterByProvider()">
+                                <mat-option value="">All</mat-option>
+                                <mat-option *ngFor="let Provider of allProvider"  [value]="Provider.providerID" >{{Provider.providerName}}</mat-option>
+                            </mat-select>
+                            <mat-hint align="start">
+                                <strong>Filter</strong> by Provider
+                            </mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-6 kt-margin-bottom-30-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput placeholder="Search Courses" #searchInput (keyup)="doFilter($event.target.value)" placeholder="Search">
+                        <mat-hint align="start">
+                            <strong>Search</strong> in all fields
+                        </mat-hint>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- end::FILTERS & GROUP ACTIONS -->
+
+        <!-- MATERIAL TABLE | Binded to datasources -->
+        <!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+        <div class="mat-table__wrapper">
+            <mat-table class="lmat-elevation-z8" #table [dataSource]="dataSource" matSort>
+                <!-- Checkbox Column -->
+
+                <!-- Table with selection -->
+
+
+                <ng-container matColumnDef="ID">
+                    <!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+                    <mat-cell *matCellDef="let exam">{{exam.examID}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Provider">
+                    <!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Provider</mat-header-cell>
+                    <mat-cell *matCellDef="let exam">{{getProviderName(exam.providerID)}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Name">
+                    <!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                    <mat-cell *matCellDef="let exam">{{exam.examName}}</mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="code">
+                    <!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Code</mat-header-cell>
+                    <mat-cell *matCellDef="let exam">{{exam.examCode}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="employee">
+                    <!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Employee</mat-header-cell>
+                    <mat-cell *matCellDef="let exam">{{getEmployeeName(exam.employeeID)}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="totalPrice">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Price</mat-header-cell>
+                    <mat-cell *matCellDef="let exam">{{exam.examPrice}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="currentPrice">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Current Price</mat-header-cell>
+                        <mat-cell *matCellDef="let exam">{{exam.examCurrentPrice}}</mat-cell>
+                    </ng-container>
+
+                <ng-container matColumnDef="creationDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Creation Date</mat-header-cell>
+                    <mat-cell *matCellDef="let exam">{{exam.creationDate| date}}</mat-cell>
+                </ng-container>
+
+
+                <ng-container matColumnDef="actions">
+					<mat-header-cell *matHeaderCellDef>Actions ></mat-header-cell>
+					<mat-cell *matCellDef="let exam">
+						<button (click)="editExam(exam.examID)" mat-icon-button color="primary"
+							matTooltip="Edit Exam">
+							<mat-icon>create</mat-icon>
+						</button>&nbsp;
+					</mat-cell>
+				</ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+            </mat-table>
+            <div class="mat-table__message" *ngIf="ExamsList!=null&&ExamsList.length==0">No records found</div>
+            <!-- Message for empty data  -->
+            <div class="mat-table__message" *ngIf="ExamsList==null">Please wait....</div>
+        </div>
+
+        <!-- start: BOTTOM -->
+        <div class="mat-table__bottom">
+            <!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
+            <!-- <mat-spinner [diameter]="20" *ngIf="dataSource==null"></mat-spinner> -->
+            <!-- MATERIAL PAGINATOR | Binded to dasources -->
+            <!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
+            <mat-paginator [pageSize]="10" [pageSizeOptions]="[3, 5, 10]"></mat-paginator>
+        </div>
+        <!-- end: BOTTOM -->
+    </kt-portlet-body>
+    <!-- end::Body -->
+</kt-portlet>

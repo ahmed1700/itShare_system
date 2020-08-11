@@ -1,0 +1,92 @@
+<div class="kt-portlet">
+    <div class="kt-portlet__head kt-portlet__head__custom">
+        <div class="kt-portlet__head-progress">
+            <!-- here can place a progress bar-->
+            <kt-alert *ngIf="errorMessage" type="warn" [showCloseButton]="true" (close)="onAlertClose($event)">
+                {{errorMessage}}
+            </kt-alert>
+           
+        </div>
+        <div class="kt-portlet__head-label">
+            <h3 class="kt-portlet__head-title">Update Attendant</h3>
+            <span class="kt-portlet__head-icon kt-hide">
+                <i class="la la-gear"></i>
+            </span>
+        </div>
+    </div>
+    <div class="kt-form">
+        <div class="kt-portlet__body">
+            <div *ngIf="Attendant">
+                <form [formGroup]="AttendantForm" class="kt-form kt-form--group-seperator-dashed">
+                    <div class="form-group kt-form__group row">
+                        <div class="col-xl-6 col-lg-6 col-sm-12 col-md-6 kt-margin-bottom-20-mobile zindex">
+                            <mat-form-field class="mat-form-field-fluid">
+                                <input type="text" matInput
+                                    placeholder="Enter signin" [format]=24
+                                    [ngxTimepicker]="picker" name="signin"
+                                    formControlName="signin" />
+
+
+                                <ngx-material-timepicker #picker>
+                                </ngx-material-timepicker>
+                                <mat-error
+                                    >
+                                    signin is
+                                    <strong>required</strong>
+                                </mat-error>
+            
+                                <mat-hint align="start">Please enter
+                                    <strong>signin</strong>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-sm-12 col-md-6 kt-margin-bottom-20-mobile">
+                            <mat-form-field class="mat-form-field-fluid">
+                                <input type="text" matInput
+                                    placeholder="Enter Hourfrom" [format]=24
+                                    [ngxTimepicker]="picker1" name="signOut"
+                                    formControlName="signOut" />
+
+
+                                <ngx-material-timepicker #picker1>
+                                </ngx-material-timepicker>
+                                <mat-error
+                                    >
+                                    signOut is
+                                    <strong>required</strong>
+                                </mat-error>
+                               
+                                <mat-hint align="start">Please enter
+                                    <strong>signOut</strong>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="form-group kt-form__group row">
+                        <div class="col-xl-12 col-lg-12 col-sm-12 col-md-12 kt-margin-bottom-20-mobile">
+                            <mat-form-field class="mat-form-field-fluid">
+                                <input type="number" min="0" matInput placeholder="Enter actualTeachedHours " formControlName="actualTeachedHours" />
+                                
+                                
+                                <mat-hint align="start">Please enter
+                                    <strong>actualTeachedHours</strong>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="kt-portlet__foot kt-portlet__no-border kt-portlet__foot--fit text-right">
+            <div class="kt-form__actions kt-form__actions--sm">
+                <button mat-button (click)="onNoClick()">Cancel</button>&nbsp;
+                <button mat-button (click)="updateAttendant()" color="primary" cdkFocusInitial [disabled]="viewLoading">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

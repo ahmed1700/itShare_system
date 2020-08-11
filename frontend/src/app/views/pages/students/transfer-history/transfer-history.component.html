@@ -1,0 +1,45 @@
+<div style="margin:25px" *ngIf="transfer&&transfer.length==0">
+    <h5 style="text-align: center"> there is no editing history</h5>
+</div>
+<div  *ngIf="transfer&&transfer.length>0">
+    <div class="header-container" style="margin:25px">
+       
+        <div>
+            <h5 style="text-align: center">Course Edit History</h5>
+        </div>
+    </div>
+    
+    <div class="kt-invoice__body" > 
+        <div class="kt-invoice__container">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>employeeID</th>
+                            <th>Old Course</th>
+                            <th>New Course</th>
+                            <th>New Payment</th>
+                            <th>Transfer Amount</th>
+                            <th>Date</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let transfer of transfer">
+                            <td>{{transfer.employeeID}}</td>
+                            <td>{{getCourseName(transfer.oldCourseID)}}</td>
+                            <td>{{getCourseName(transfer.newCourseID)}}</td>
+                            <td>{{transfer.newTotalPayment}}</td>
+                            <td>{{transfer.paid}}</td>
+                            <td>{{transfer.creationDate|date}}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+   
+    
+</div>
+

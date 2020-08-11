@@ -1,0 +1,109 @@
+<!--begin::Form-->
+<div class="kt-portlet" style="margin:15px">
+    <div class="kt-portlet__head kt-portlet__head__custom">
+        <div class="kt-portlet__head-label">
+            <h3 class="kt-portlet__head-title">Assign Student</h3>
+        </div>
+    </div>
+    <form [formGroup]="assignForm" class="kt-form">
+        <div id="alert" #alert>
+        <kt-alert  *ngIf="errormessage" type="warn" [showCloseButton]="true" [duration]="10000"
+            (close)="onAlertClose($event)">
+            {{errormessage}}
+        </kt-alert>
+    </div> 
+        <div *ngIf="TotalPayment">
+            <p class="alert alert-info" style="text-align:center;">TOTAL PAYMENT:{{TotalPayment}}</p>
+        </div>
+        <div class="kt-form__section kt-form__section--first">
+            
+            <h6 style="margin-top:10px">Assign student to course</h6>
+            <hr>
+            <div class="form-group kt-form__group row">
+                <div class="col-lg-6 col-md-6  col-sm-4 kt-margin-bottom-20-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <mat-label>Select Course</mat-label>
+                        <mat-select formControlName="courseID"
+                            (selectionChange)="changeTracks(assignForm.controls['courseID'].value)">
+                            <mat-option *ngFor="let course of courses" [value]="course.courseID">{{course.courseName}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>Please select
+                            <strong>course</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6 col-md-6  col-sm-4 kt-margin-bottom-20-mobile"
+                    *ngIf="tracks.length>0||courseTracks.length>0">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <mat-label>Select Tracks</mat-label>
+                        <mat-select formControlName="courseTracks" (selectionChange)="changePayments(assignForm.controls['courseTracks'].value)" multiple>
+                            <mat-option *ngFor="let track of tracks" [value]="track.trackID">{{track.trackName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+ 
+            </div>
+            <h6  style="margin-top:10px">Assign student to group</h6>
+            <hr>
+            <div class="form-group kt-form__group row">
+                <div class="col-lg-6 col-md-6  col-sm-4 kt-margin-bottom-20-mobile" >
+                    <mat-form-field class="mat-form-field-fluid">
+                        <mat-label>Select Group</mat-label>
+                        <mat-select formControlName="groupID">
+                            <mat-option *ngFor="let group of groups" [value]="group.groupID">{{group.groupName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+            </div>
+            <h6 style="margin-top:10px">student totalPayment</h6>
+            <hr>
+            <div class="form-group kt-form__group row">
+                <div class="col-lg-6 col-md-6  col-sm-4 kt-margin-bottom-20-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput placeholder="Enter TotalPayment" [value]="TotalPayment" formControlName="totalPayment" />
+                        <mat-error>Please enter
+                            <strong>valid price</strong>
+                        </mat-error>
+                        <mat-hint align="start">Please enter
+                            <strong>totalPayment</strong>
+                        </mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6 col-md-6  col-sm-4 kt-margin-bottom-20-mobile" *ngIf="canTransfer==true">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput placeholder="Enter Comment"  formControlName="comment" />
+                        <mat-hint align="start">Please enter
+                            <strong>Comment</strong>
+                        </mat-hint>
+                    </mat-form-field>
+                </div>
+            </div>
+            
+        </div>
+        <div class="kt-form__actions kt-form__actions--solid">
+            <div class="row text-right">
+                <div class="col-lg-12">
+                    <button type="button" mat-raised-button (click)="onNoClick()" matTooltip="Cancel changes">
+                        Cancel
+                    </button>&nbsp;
+                    <button type="button" mat-raised-button color="primary" (click)="onSubmit()"
+                         matTooltip="Pay">
+                        Save
+                    </button>
+                    <button *ngIf="canTransfer==true" type="button" mat-raised-button color="warn" style="margin:5px" (click)="transfer()"
+                         matTooltip="Pay">
+                        Transfer
+                    </button>
+                    
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+<!--end::Form-->

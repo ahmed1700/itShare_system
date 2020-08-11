@@ -1,0 +1,194 @@
+<kt-portlet>
+    <kt-portlet-header [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'">
+        <ng-container ktPortletTools>
+            <a [routerLink]="['/courses']" class="btn btn-secondary kt-margin-r-10" mat-raised-button
+                matTooltip="Back to the courses list">
+                <i class="la la-arrow-left"></i>
+                <span class="kt-hidden-mobile">Back</span>
+            </a>
+            <a href="javascript:;" class="btn btn-secondary kt-margin-r-10" (click)="reset()"
+                [disabled]="selectedTab !== 0" mat-raised-button matTooltip="Reset changes">
+                <i class="la la-cog"></i>
+                <span class="kt-hidden-mobile">Reset</span>
+            </a>
+            <a href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="onSumbit(true)"
+                mat-raised-button matTooltip="Save & Continue">
+                <span>Save</span>
+            </a>
+        </ng-container>
+    </kt-portlet-header>
+
+    <kt-portlet-body>
+        <mat-tab-group [(selectedIndex)]="selectedTab">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <i class="mat-tab-label-icon fa fa-user"></i>
+                    Basic info
+                </ng-template>
+                <ng-template matTabContent>
+                    <!--begin::Form-->
+                    <div *ngIf="course">
+                        <form [formGroup]="courseForm" class="kt-form kt-form--group-seperator-dashed">
+
+                            <kt-alert *ngIf="errorMessage" type="warn" [showCloseButton]="true" [duration]="10000"
+                                (close)="onAlertClose($event)">
+                                {{errorMessage}}
+                            </kt-alert>
+                            <div *ngIf="TotalPrice">
+                                <p class="alert alert-info" style="text-align:center;">TotalPrice:{{TotalPrice}} TotalHours:{{TotalHours}}</p>
+                            </div>
+                            <div class="kt-form__section kt-form__section--first">
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-6  col-md-6  col-sm-4 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter Course Name "
+                                                formControlName="courseName" />
+                                            <mat-error *ngIf="courseForm.controls['courseName'].errors?.required">course
+                                                Name is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>course Name </strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-6  col-md-6  col-sm-4 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter discount" formControlName="discount" (keyup)="changeDiscount()"/>
+                                            <mat-icon matSuffix>%</mat-icon>
+
+                                            <mat-error
+                                                *ngIf="courseForm.controls['discount'].errors?.required">
+                                                Please enter
+                                                <strong>Course Discount </strong>
+                                            </mat-error>
+                                            <mat-error
+                                                *ngIf="courseForm.controls['discount'].errors?.pattern||courseForm.controls['discount'].errors?.min||courseForm.controls['discount'].errors?.max">
+                                                Please enter
+                                                <strong>valid discount </strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>discount</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-6  col-md-6  col-sm-4 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <textarea matInput placeholder="Enter course Description"
+                                                formControlName="courseDesc"></textarea>
+                                            <mat-error> course Description is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong> course Description</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-6  col-md-6  col-sm-4 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <mat-label>Choose Provider</mat-label>
+                                            <mat-select formControlName="providerID">
+                                                <mat-option *ngFor="let provider of allproviders"
+                                                    [value]="provider.providerID">{{provider.providerName}}</mat-option>
+                                            </mat-select>
+                                            <mat-error>Please select
+                                                <strong>provider</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please select
+                                                <strong>provide</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+
+                                    </div>
+                                </div>
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-12 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <mat-label>Choose Course Tracks</mat-label>
+                                            <mat-select formControlName="courseTracks" (selectionChange)='calculateTotal()' multiple>
+                                                <mat-option *ngFor="let track of tracks" [value]="track.trackID">
+                                                    {{track.trackName}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-hint align="start">Please select
+                                                <strong>course Tracks</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-6  col-md-6  col-sm-4 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter Course Price "
+                                                formControlName="coursePrice" />
+                                                <mat-error *ngIf="courseForm.controls['coursePrice'].errors?.required">Please
+                                                    enter
+                                                    <strong>course price</strong>
+                                                </mat-error>
+
+                                            <mat-error *ngIf="courseForm.controls['coursePrice'].errors?.pattern">Please
+                                                enter
+                                                <strong>valid price</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>Course Price </strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-6  col-md-6  col-sm-4 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter Course Hours"
+                                                formControlName="courseHours" />
+
+                                                <mat-error *ngIf="courseForm.controls['courseHours'].errors?.required">Please
+                                                    enter
+                                                    <strong>Course Hours</strong>
+                                                </mat-error>
+                                            <mat-error *ngIf="courseForm.controls['courseHours'].errors?.pattern">Please
+                                                enter
+                                                <strong>valid Number </strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>Course Hours</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-6  col-md-6  col-sm-4 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter Course Price After Discount "
+                                                formControlName="priceAfterDiscount" />
+                                                <mat-error *ngIf="courseForm.controls['priceAfterDiscount'].errors?.required">Please
+                                                    enter
+                                                    <strong> Price After Discount</strong>
+                                                </mat-error>
+                                            <mat-error *ngIf="courseForm.controls['priceAfterDiscount'].errors?.pattern">Please
+                                                enter
+                                                <strong>valid price</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>course Price After Discount </strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                    <!--end::Form-->
+                </ng-template>
+            </mat-tab>
+
+
+
+        </mat-tab-group>
+    </kt-portlet-body>
+</kt-portlet>

@@ -1,0 +1,204 @@
+<div>
+    <kt-portlet>
+        <!-- PORTLET LOADING | Binded to TABLE Datasource -->
+        <!-- See prop => '~/core/_crud/models/data-sources/_base.datasource.ts' (loading$) -->
+        <kt-portlet-header title='Todays Group' [class]="'kt-portlet__head--lg'">
+            <ng-container ktPortletTools>
+
+            </ng-container>
+        </kt-portlet-header>
+        <!-- end::Header -->
+
+        <!-- start::Body (attribute: ktPortletBody) -->
+        <kt-portlet-body>
+
+            <mat-tab-group [(selectedIndex)]="selectedTab" (selectedTabChange)="onTabChanged($event);">
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <i class="mat-tab-label-icon fa fa-group"></i>
+                        Working Group
+                        <span class="badge badge-success m-2"
+                            *ngIf="GroupsResult&&GroupsResult.length>0">{{GroupsResult.length}}</span>
+                    </ng-template>
+                    <ng-template matTabContent>
+                        <div class="mat-table__wrapper">
+
+                            <mat-table class="lmat-elevation-z8" #table [dataSource]="dataSource" matSort
+                                #sort="matSort">
+
+                                <ng-container matColumnDef="groupID">
+                                    <!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+                                    <mat-cell *matCellDef="let group">
+                                        <a routerLink="/trainergroups/view/{{group.groupID}}">{{group.groupID}} </a>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="groupName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Group Name</mat-header-cell>
+                                    <mat-cell *matCellDef="let group">{{group.groupName}}</mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="branch">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Branch</mat-header-cell>
+                                    <mat-cell *matCellDef="let group">{{getBranchName(group.branchID)}}</mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="groupType">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Group Type</mat-header-cell>
+                                    <mat-cell *matCellDef="let group">
+                                        {{group.groupType}}
+                                    </mat-cell>
+                                </ng-container>
+
+
+
+                                <ng-container matColumnDef="class">
+                                    <mat-header-cell *matHeaderCellDef>Group class</mat-header-cell>
+                                    <mat-cell *matCellDef="let group">
+                                        {{group.class}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="actions">
+                                    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                                    <mat-cell *matCellDef="let group" >
+
+                                        <button *ngIf="isTrainerSignedIn(group.groupID)" (click)="signIn(group)" style="margin:3px"
+                                            mat-raised-button color="primary" matTooltip="Sign In">
+                                            <!-- <img src="./assets/media/icons/login.png" alt="view details"> -->
+                                            Sign In
+                                        </button>
+
+                                        <button *ngIf="isTrainerSignedOut(group.groupID)" style="margin:3px"
+                                            (click)="studentAttend(group)" mat-raised-button color="primary"
+                                            matTooltip="Student Attend">
+                                            <!-- <img src="./assets/media/icons/exit.png" alt="view details"> -->
+                                            Student Attend
+                                        </button>
+
+                                        <button *ngIf="isTrainerSignedOut(group.groupID)"
+                                            (click)="signOut(group.groupID,'today')" mat-raised-button color="warn"
+                                            matTooltip="Sign Out">
+                                            <!-- <img src="./assets/media/icons/exit.png" alt="view details"> -->
+                                            Sign Out
+                                        </button>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+                                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                            </mat-table>
+                            <div class="mat-table__message" *ngIf="GroupsResult!=null&&GroupsResult.length==0">No lectuers
+                                found</div>
+                            <!-- Message for empty data  -->
+                            <div class="mat-table__message" *ngIf="GroupsResult==null">Please wait....</div>
+                            <!-- start: BOTTOM -->
+
+                        </div>
+                        <div class="mat-table__bottom">
+                            <!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
+                            <!-- <mat-spinner [diameter]="20" *ngIf="dataSource==null"></mat-spinner> -->
+                            <!-- MATERIAL PAGINATOR | Binded to dasources -->
+                            <!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
+                            <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[3, 5, 10]"></mat-paginator>
+                        </div>
+                    </ng-template>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <i class="mat-tab-label-icon fa fa-group"></i>
+                        Delayed Group
+                        <span class="badge badge-danger m-2"
+                            *ngIf="AlternativeAttendant&&AlternativeAttendant.length>0">{{AlternativeAttendant.length}}</span>
+                    </ng-template>
+                    <ng-template matTabContent>
+                        <div class="mat-table__wrapper">
+
+                            <mat-table class="lmat-elevation-z8" #table [dataSource]="dataSource2" matSort
+                                #sort4="matSort">
+
+                                <ng-container matColumnDef="groupID">
+                                    <!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+                                    <mat-cell *matCellDef="let alternative">
+                                        <a
+                                            routerLink="/trainergroups/view/{{alternative.groupID}}">{{alternative.groupID}}</a>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="groupName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Group Name</mat-header-cell>
+                                    <mat-cell *matCellDef="let alternative">{{getGroupName(alternative.groupID)}}
+                                    </mat-cell>
+                                </ng-container>
+
+
+
+                                <ng-container matColumnDef="from">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>From</mat-header-cell>
+                                    <mat-cell *matCellDef="let alternative">{{alternative.HourFrom}}</mat-cell>
+                                </ng-container>
+
+
+                                <ng-container matColumnDef="to">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>To</mat-header-cell>
+                                    <mat-cell *matCellDef="let alternative">{{alternative.HourTo}}</mat-cell>
+                                </ng-container>
+
+
+
+                                <ng-container matColumnDef="class">
+                                    <mat-header-cell *matHeaderCellDef>Group class</mat-header-cell>
+                                    <mat-cell *matCellDef="let alternative">
+                                        {{alternative.class}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="actions">
+                                    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                                    <mat-cell *matCellDef="let alternative">
+                                        <button *ngIf="isTrainerSignedIn(alternative.groupID)"
+                                            (click)="DelaySignIn(alternative)" mat-raised-button color="primary"
+                                            matTooltip="Sign In">
+                                            Sign In
+                                        </button>
+                                        <button *ngIf="isTrainerSignedOut(alternative.groupID)" style="margin:3px"
+                                             (click)="studentAttend(alternative)" mat-raised-button color="primary"
+                                            matTooltip="Student Attend">
+                                            Student Attend
+                                        </button>&nbsp;
+                                        <button *ngIf="isTrainerSignedOut(alternative.groupID)"
+                                            (click)="signOut(alternative.groupID,'delayed')" mat-raised-button
+                                            color="warn" matTooltip="Sign Out">
+                                            Sign Out
+                                        </button>&nbsp;
+                                    </mat-cell>
+                                </ng-container>
+
+                                <mat-header-row *matHeaderRowDef="displayedColumns2"></mat-header-row>
+
+                                <mat-row *matRowDef="let row; columns: displayedColumns2"></mat-row>
+                            </mat-table>
+                            <div class="mat-table__message" *ngIf="AlternativeAttendant!=null&&AlternativeAttendant.length==0">No
+                              Delay  Lectuers Today</div>
+                            <!-- Message for empty data  -->
+                            <div class="mat-table__message" *ngIf="AlternativeAttendant==null">Please wait....</div>
+                        </div>
+                        <div class="mat-table__bottom">
+                            <!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
+                            <!-- <mat-spinner [diameter]="20" *ngIf="dataSource==null"></mat-spinner> -->
+                            <!-- MATERIAL PAGINATOR | Binded to dasources -->
+                            <!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
+                            <mat-paginator #paginator4 [pageSize]="10" [pageSizeOptions]="[3, 5, 10]"></mat-paginator>
+                        </div>
+                    </ng-template>
+                </mat-tab>
+            </mat-tab-group>
+
+            <!-- end: BOTTOM -->
+        </kt-portlet-body>
+        <!-- end::Body -->
+    </kt-portlet>
+</div>

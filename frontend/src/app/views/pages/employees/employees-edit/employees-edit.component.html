@@ -1,0 +1,287 @@
+<kt-portlet>
+    <kt-portlet-header [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+        <ng-container ktPortletTools>
+            <a [routerLink]="['/employees']" class="btn btn-secondary kt-margin-r-10" mat-raised-button
+                matTooltip="Back to the users list">
+                <i class="la la-arrow-left"></i>
+                <span class="kt-hidden-mobile">Back</span>
+            </a>
+            <a href="javascript:;" class="btn btn-secondary kt-margin-r-10" (click)="reset()"
+                [disabled]="selectedTab !== 0" mat-raised-button matTooltip="Reset changes">
+                <i class="la la-cog"></i>
+                <span class="kt-hidden-mobile">Reset</span>
+            </a>
+            <a href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="onSumbit(false)"
+                mat-raised-button matTooltip="Save & Continue">
+                <span>Save</span>
+            </a>
+        </ng-container>
+    </kt-portlet-header>
+
+    <kt-portlet-body>
+        <mat-tab-group [(selectedIndex)]="selectedTab">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <i class="mat-tab-label-icon fa fa-user"></i>
+                    Basic info
+                </ng-template>
+                <ng-template matTabContent>
+                    <!--begin::Form-->
+                    <div *ngIf="Employee">
+                        <form [formGroup]="EmployeesForm" class="kt-form kt-form--group-seperator-dashed">
+
+                            <kt-alert *ngIf="errorMessage" type="warn" [showCloseButton]="true" [duration]="50000"
+                                (close)="onAlertClose($event)">
+                                {{errorMessage}}
+                            </kt-alert>
+                            <div class="kt-form__section kt-form__section--first">
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter fullname in Arabic"
+                                                formControlName="fullNameArabic" />
+                                            <mat-error *ngIf="EmployeesForm.controls['fullNameArabic'].errors?.required">fullname in english is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-error *ngIf="EmployeesForm.controls['fullNameArabic'].errors?.pattern">Please enter
+                                                    <strong>valid fullNameEnglish</strong>
+                                            </mat-error >
+                                            <mat-error *ngIf="EmployeesForm.controls['fullNameArabic'].errors?.minlength">FullNameEnglish at least
+                                                    <strong>3 chars</strong>
+                                                </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>fullName in Arabic</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter fullname in english"
+                                                formControlName="fullNameEnglish" />
+                                                <mat-error *ngIf="EmployeesForm.controls['fullNameEnglish'].errors?.required">FullNameEnglish is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                    <mat-error *ngIf="EmployeesForm.controls['fullNameEnglish'].errors?.pattern">Please enter
+                                                            <strong>valid fullNameEnglish</strong>
+                                                    </mat-error >
+                                                    <mat-error *ngIf="EmployeesForm.controls['fullNameEnglish'].errors?.minlength">FullNameEnglish at least
+                                                            <strong>3 chars</strong>
+                                                    </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>fullName in English</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input type="text" matInput placeholder="Enter nationalID"
+                                                formControlName="nationalID" />
+                                                <mat-error *ngIf="EmployeesForm.controls['nationalID'].errors?.required">nationalID is
+                                                        <strong>required</strong>
+                                                    </mat-error>
+                                                    <mat-error *ngIf="EmployeesForm.controls['nationalID'].errors?.pattern||EmployeesForm.controls['nationalID'].errors?.rangeLength">Please enter
+                                                            <strong>valid nationalID</strong>
+                                                    </mat-error >
+                                            <mat-hint align="start">Please enter
+                                                <strong>nationalID</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter MobileNumber" formControlName="mobile1" />
+                                            <mat-error *ngIf="EmployeesForm.controls['mobile1'].errors?.required">Mobile1 is
+                                                    <strong>required</strong>
+                                            </mat-error>
+                                            <mat-error *ngIf="EmployeesForm.controls['mobile1'].errors?.pattern|| EmployeesForm.controls['mobile1'].errors?.rangeLength">Please enter
+                                                    <strong>valid Mobile Number</strong>
+                                        </mat-error >
+                                            <mat-hint align="start">Please enter
+                                                <strong>Mobile Number</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter Mobile Number"
+                                                formControlName="mobile2" />
+                                                <mat-error *ngIf="EmployeesForm.controls['mobile2'].errors?.pattern||EmployeesForm.controls['mobile2'].errors?.rangeLength">Please enter
+                                                        <strong>valid Mobile Number</strong>
+                                            </mat-error >
+                                            <mat-hint align="start">Please enter
+                                                <strong>Mobile Number</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter Email" formControlName="email" />
+                                            <mat-error  *ngIf="EmployeesForm.controls['email'].errors?.required">Email is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-error *ngIf="EmployeesForm.controls['email'].errors?.email">Please enter
+                                                    <strong>valid Email</strong>
+                                                </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>Email</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <mat-label>Choose Gender</mat-label>
+                                            <mat-select formControlName="gender">
+                                                <mat-option value="male">Male</mat-option>
+                                                <mat-option value="female">Female</mat-option>
+                                            </mat-select>
+                                            <mat-error>Gender is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please Choose
+                                                <strong>Gender</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                  <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter homeTel number"
+                                                formControlName="homeTel" />
+                                                <mat-error *ngIf="EmployeesForm.controls['homeTel'].errors?.pattern||EmployeesForm.controls['homeTel'].errors?.rangeLength">Please enter
+                                                        <strong>valid homeTel number</strong>
+                                            </mat-error >
+                                            <mat-hint align="start">Please enter
+                                                <strong>HomeTel Number</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <mat-label>Choose City</mat-label>
+                                            <mat-select formControlName="city">
+                                                <mat-option *ngFor="let city of Cities" [value]="city">{{city}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>City is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please choose
+                                                <strong>City</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter Address"
+                                                formControlName="address" />
+                                            <mat-error *ngIf="EmployeesForm.controls['address'].errors?.required">Address is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-error *ngIf="EmployeesForm.controls['address'].errors?.minlength">Address min lenght is
+                                                <strong>5</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>Address</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <mat-label>Choose Status</mat-label>
+                                            <mat-select formControlName="status">
+                                                <mat-option *ngFor="let status  of employeeStatus" [value]="status">
+                                                    {{status| titlecase}}</mat-option>
+                                            </mat-select>
+                                            <mat-error>Please choose
+                                                <strong>Status</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please choose
+                                                <strong>Status</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <mat-label>Choose Branch</mat-label>
+                                            <mat-select formControlName="branchID">
+                                                <mat-option *ngFor="let branch of allBranches"
+                                                    [value]="branch.branchID">{{branch.name}}</mat-option>
+                                            </mat-select>
+                                            <mat-error>Please select
+                                                <strong>Branch</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please select
+                                                <strong>Branch</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter Password"
+                                                formControlName="password" />
+                                            <mat-error *ngIf="EmployeesForm.controls['password'].errors?.pattern">Password must be
+                                                <strong>Characters or Numbers Only</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>Password</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <mat-label>Choose Role</mat-label>
+                                            <mat-select formControlName="roles">
+                                                <mat-option *ngFor="let role  of employeeRoles" [value]="role">
+                                                    {{role | titlecase}}</mat-option>
+                                            </mat-select>
+                                            <mat-error>Please choose
+                                                <strong>role</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please choose
+                                                <strong>Role</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                            <mat-form-field class="mat-form-field-fluid">
+                                                <input matInput placeholder="Enter Employee Salary"
+                                                    formControlName="salary" />
+                                                <mat-error> Please enter
+                                                    <strong>Valid Salary</strong>
+                                                </mat-error>
+                                                <mat-hint align="start">Please enter
+                                                    <strong>Valid Salary</strong>
+                                                </mat-hint>
+                                            </mat-form-field>
+                                        </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!--end::Form-->
+                </ng-template>
+            </mat-tab>
+         <!--  <mat-tab>
+                <ng-template mat-tab-label>
+                    <i class="mat-tab-label-icon flaticon2-group"></i>
+                    Assign Employee
+                </ng-template>
+                <ng-template matTabContent>
+                    <kt-employees-edit></kt-employees-edit>
+                </ng-template>
+            </mat-tab> --> 
+
+
+        </mat-tab-group>
+    </kt-portlet-body>
+</kt-portlet>

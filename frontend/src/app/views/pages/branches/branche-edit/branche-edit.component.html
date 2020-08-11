@@ -1,0 +1,225 @@
+<kt-portlet>
+    <kt-portlet-header [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+        <ng-container ktPortletTools>
+            <a [routerLink]="['/branches']" class="btn btn-secondary kt-margin-r-10" mat-raised-button
+                matTooltip="Back to the Branches list">
+                <i class="la la-arrow-left"></i>
+                <span class="kt-hidden-mobile">Back</span>
+            </a>
+            <a href="javascript:;" class="btn btn-secondary kt-margin-r-10" (click)="reset()"
+                [disabled]="selectedTab !== 0" mat-raised-button matTooltip="Reset changes">
+                 <i class="la la-cog"></i>
+                <span class="kt-hidden-mobile">Reset</span>
+            </a>
+            <a href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="onSumbit(false)"
+                mat-raised-button matTooltip="Save & Continue">
+                <span class="kt-hidden-mobile">Save</span>
+            </a>
+
+        </ng-container>
+    </kt-portlet-header>
+
+    <kt-portlet-body>
+        <mat-tab-group [(selectedIndex)]="selectedTab">
+            <mat-tab>
+
+                <ng-template mat-tab-label>
+                    <i class="mat-tab-label-icon fa fa-user"></i>
+                    Branch info
+                </ng-template>
+                <ng-template matTabContent>
+                    <!--begin::Form-->
+
+                    <div *ngIf="Branch">
+
+                        <form [formGroup]="branchForm" class="kt-form kt-form--group-seperator-dashed">
+
+                            <kt-alert *ngIf="errorMessage" type="warn" [showCloseButton]="true" [duration]="10000"
+                                (close)="onAlertClose($event)">
+                                {{errorMessage}}
+                            </kt-alert>
+                            <div class="kt-form__section kt-form__section--first">
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-4  col-md-4  col-sm-4 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter branch Name" formControlName="name" />
+                                            <mat-error *ngIf="branchForm.controls['name'].errors?.required">branch name
+                                                is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-error *ngIf="branchForm.controls['name'].errors?.pattern">Please enter
+                                                <strong>valid branch name</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>branch name</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-4  col-md-4  col-sm-4 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter address" formControlName="address" />
+                                            <mat-error>address is
+                                                 <strong>required</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>address</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-4  col-md-4  col-sm-4 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter details" formControlName="details" />
+                                            <mat-error>branch details is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>details</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="form-group kt-form__group row">
+
+                                    <div class="col-lg-4  col-md-4  col-sm-4 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter ip" formControlName="ip" />
+                                            <mat-error *ngIf="branchForm.controls['ip'].errors?.required">branch IP is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-error *ngIf="branchForm.controls['ip'].errors?.pattern">Please enter
+                                                <strong>valid IP</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>ip</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-4  col-md-4  col-sm-4 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter homeTel" formControlName="homeTel1" />
+                                            <mat-error *ngIf="branchForm.controls['homeTel1'].errors?.required">Home
+                                                telehone 1 is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-error
+                                                *ngIf="branchForm.controls['homeTel1'].errors?.pattern||branchForm.controls['homeTel1'].errors?.rangeLength">
+                                                Please enter
+                                                <strong>valid telphone Number</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>homeTel2</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-4  col-md-4  col-sm-4 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter homeTel2" formControlName="homeTel2" />
+                                            <mat-error *ngIf="branchForm.controls['homeTel2'].errors?.required">Home
+                                                telehone 2 is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-error
+                                                *ngIf="branchForm.controls['homeTel2'].errors?.pattern||branchForm.controls['homeTel2'].errors?.rangeLength">
+                                                Please enter
+                                                <strong>valid telphone Number</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>homeTel2</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="form-group kt-form__group row">
+                                <div class="col-lg-4  col-md-4  col-sm-4 kt-margin-bottom-20-mobile">
+                                    <mat-form-field class="mat-form-field-fluid">
+                                        <input matInput placeholder="Enter MobileNumber" formControlName="mobile1" />
+                                        <mat-error *ngIf="branchForm.controls['mobile1'].errors?.required">Mobile1 is
+                                            <strong>required</strong>
+                                        </mat-error>
+                                        <mat-error
+                                            *ngIf="branchForm.controls['mobile1'].errors?.pattern||branchForm.controls['mobile1'].errors?.rangeLength">
+                                            Please enter
+                                            <strong>valid Mobile Number</strong>
+                                        </mat-error>
+                                        <mat-hint align="start">Please enter
+                                            <strong>Mobile Number</strong>
+                                        </mat-hint>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-lg-4  col-md-4  col-sm-4 kt-margin-bottom-20-mobile">
+                                    <mat-form-field class="mat-form-field-fluid">
+                                        <input matInput placeholder="Enter MobileNumber" formControlName="mobile2" />
+                                        <mat-error *ngIf="branchForm.controls['mobile2'].errors?.required">Mobile1 is
+                                            <strong>required</strong>
+                                        </mat-error>
+                                        <mat-error
+                                            *ngIf="branchForm.controls['mobile2'].errors?.pattern||branchForm.controls['mobile2'].errors?.rangeLength">
+                                            Please enter
+                                            <strong>valid Mobile Number</strong>
+                                        </mat-error>
+                                        <mat-hint align="start">Please enter
+                                            <strong>Mobile Number</strong>
+                                        </mat-hint>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-lg-4  col-md-4  col-sm-4 kt-margin-bottom-20-mobile">
+                                    <mat-form-field class="mat-form-field-fluid">
+                                        <input matInput placeholder="Enter Email" formControlName="email" />
+                                        <mat-error *ngIf="branchForm.controls['email'].errors?.required">Email is
+                                            <strong>required</strong>
+                                        </mat-error>
+                                        <mat-error *ngIf="branchForm.controls['email'].errors?.email">Please enter
+                                            <strong>valid Email</strong>
+                                        </mat-error>
+                                        <mat-hint align="start">Please enter
+                                            <strong>Email</strong>
+                                        </mat-hint>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="form-group kt-form__group row">
+
+                                <div class="col-lg-4  col-md-4  col-sm-4 kt-margin-bottom-20-mobile">
+                                    <mat-form-field class="mat-form-field-fluid">
+                                        <input matInput placeholder="Enter ip2" formControlName="ip2" />
+                                        <mat-error *ngIf="branchForm.controls['ip2'].errors?.required">branch IP is
+                                            <strong>required</strong>
+                                        </mat-error>
+                                        <mat-error *ngIf="branchForm.controls['ip2'].errors?.pattern">Please enter
+                                            <strong>valid IP</strong>
+                                        </mat-error>
+                                        <mat-hint align="start">Please enter
+                                            <strong>ip2</strong>
+                                        </mat-hint>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-lg-4  col-md-4  col-sm-4 kt-margin-bottom-20-mobile">
+                                    <mat-form-field class="mat-form-field-fluid">
+                                        <input matInput placeholder="Enter ip3" formControlName="ip3" />
+                                        <mat-error *ngIf="branchForm.controls['ip3'].errors?.required">branch IP is
+                                            <strong>required</strong>
+                                        </mat-error>
+                                        <mat-error *ngIf="branchForm.controls['ip3'].errors?.pattern">Please enter
+                                            <strong>valid IP</strong>
+                                        </mat-error>
+                                        <mat-hint align="start">Please enter
+                                            <strong>ip3</strong>
+                                        </mat-hint>
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+
+                        </form>
+                    </div>
+                    <!--end::Form-->
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+    </kt-portlet-body>
+</kt-portlet>

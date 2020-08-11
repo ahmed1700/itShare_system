@@ -1,0 +1,39 @@
+<div style="margin:25px" *ngIf="studentAttendant&&studentAttendant.length==0">
+    <h5 style="text-align: center"> there is no editing history</h5>
+</div>
+<div  *ngIf="studentAttendant&&studentAttendant.length>0">
+    <div class="header-container" style="margin:25px">
+       
+        <div>
+            <h5 style="text-align: center">Student Attendant</h5>
+        </div>
+    </div>
+    
+    <div class="kt-invoice__body" > 
+        <div class="kt-invoice__container">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>groupID</th>
+                            <th>trackID</th>
+                            <th>Date</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let s of studentAttendant">
+                            <td>{{getGroupName(s.groupID)}}</td>
+                            <td>{{getTrackName(s.trackID)}}</td>
+                            <td>{{s.date|date}}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+   
+    
+</div>
+

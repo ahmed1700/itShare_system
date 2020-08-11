@@ -1,0 +1,122 @@
+<kt-portlet>
+	<!-- PORTLET LOADING | Binded to TABLE Datasource -->
+	<!-- See prop => '~/core/_crud/models/data-sources/_base.datasource.ts' (loading$) -->
+	<kt-portlet-header [title]="'Trainer Payment list'" [class]="'kt-portlet__head--lg'">
+
+	</kt-portlet-header>
+	<!-- end::Header -->
+
+	<!-- start::Body (attribute: ktPortletBody) -->
+	<kt-portlet-body>
+		<!-- start::FILTERS & GROUP ACTIONS -->
+		<div class="kt-form kt-margin-b-50">
+			<!-- start::FILTERS -->
+			<div class="kt-form__filtration">
+				<div class="row align-items-center">
+					<div class="col-md-2 kt-margin-bottom-30-mobile">
+						<!-- 'm  margin-bottom-10-mobile' for adaptive make-up  -->
+						
+					</div>
+					
+				</div>
+			</div>
+			<!-- end::FILTERS -->
+
+			<!-- start::GROUP ACTIONS -->
+			<!-- Group actions list: 'Delete selected' | 'Fetch selected' | 'Update status for selected' -->
+			<!-- Group actions are shared for all LISTS -->
+			<div class="row align-items-center collapse kt-form__group-actions kt-margin-top-20 kt-margin-bottom-20"
+				[ngClass]="{'show' : selection.selected.length > 0}">
+				<!-- We show 'Group Actions' div if smth are selected -->
+				
+			</div>
+			<!-- end::GROUP ACTIONS -->
+		</div>
+		<!-- end::FILTERS & GROUP ACTIONS -->
+
+		<!-- MATERIAL TABLE | Binded to datasources -->
+		<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+		<div class="mat-table__wrapper">
+			<mat-table class="lmat-elevation-z8"  #table [dataSource]="dataSource" matSort>
+				<!-- Checkbox Column -->
+
+				<!-- Table with selection -->
+				<!-- https://run.stackblitz.com/api/angular/v1?file=app%2Ftable-selection-example.ts -->
+				
+
+				<ng-container matColumnDef="ID">
+					<!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+					<mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+					<mat-cell *matCellDef="let group">{{getGroupID(group)}}</mat-cell>
+				</ng-container>
+
+
+				<ng-container matColumnDef="group">
+					<!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+					<mat-header-cell *matHeaderCellDef mat-sort-header>group</mat-header-cell>
+					<mat-cell *matCellDef="let group">{{getGroupName(group)}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="groupTracks.track">
+					<!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Track</mat-header-cell>
+					<mat-cell *matCellDef="let group">{{getTrackName(group.trackID)}}</mat-cell>
+				</ng-container>
+  
+		 		<ng-container matColumnDef="groupTracks.trainer">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>trainer</mat-header-cell>
+					<mat-cell *matCellDef="let  group">{{getTrainerName(group.trainerID)}}</mat-cell>
+				</ng-container>
+
+
+				<ng-container matColumnDef="groupTracks.totalTeachedHours" >
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Total Teached Hours</mat-header-cell>
+					<mat-cell *matCellDef="let group">{{group.totalTeachedHours}}</mat-cell>
+				</ng-container>
+
+
+				<ng-container matColumnDef="groupTracks.trainerTotalTeachedHours" >
+						<mat-header-cell *matHeaderCellDef mat-sort-header>Actual Teached Hours</mat-header-cell>
+						<mat-cell *matCellDef="let group">{{group.trainerTotalTeachedHours}}</mat-cell>
+					</ng-container>
+               
+				<ng-container matColumnDef="groupTracks.trainerPricePerHour">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Price Per Hour</mat-header-cell>
+					<mat-cell *matCellDef="let group">{{group.trainerPricePerHour}}</mat-cell>
+				</ng-container>
+
+				
+
+				
+                  
+				<ng-container matColumnDef="actions">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
+					<mat-cell *matCellDef="let group">
+		
+					<button (click)="payForTrainer(group)" mat-raised-button color="primary" matTooltip="Pay For Trainer">
+						Pay
+					</button>&nbsp;
+				</mat-cell>
+				</ng-container>
+
+				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+				<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+			</mat-table>
+			<div class="mat-table__message" *ngIf="GroupList!=null&&GroupList.length==0">No records found</div>
+			<!-- Message for empty data  -->
+			<div class="mat-table__message" *ngIf="GroupList==null">Please wait....</div>
+		</div>
+
+		<!-- start: BOTTOM -->
+		<div class="mat-table__bottom">
+			<!-- MATERIAL SPINNER | Url: 'https://material.angular.io/components/progress-spinner/overview' -->
+			<!-- <mat-spinner [diameter]="20" *ngIf="dataSource==null"></mat-spinner> -->
+			<!-- MATERIAL PAGINATOR | Binded to dasources -->
+			<!-- See off.documentations 'https://material.angular.io/components/paginator/overview' -->
+			<mat-paginator [pageSize]="10" [pageSizeOptions]="[3, 5, 10]"></mat-paginator>
+		</div>
+		<!-- end: BOTTOM -->
+	</kt-portlet-body>
+	<!-- end::Body -->
+</kt-portlet>

@@ -1,0 +1,40 @@
+<div style="margin:25px" *ngIf="categoryDetails&&categoryDetails.length==0">
+        <h5 style="text-align: center"> there is no editing history</h5>
+    </div>
+    <div  *ngIf="categoryDetails&&categoryDetails.length>0">
+        <div class="header-container" style="margin:25px">
+           
+            <div>
+                <h5 style="text-align: center">Payment Details</h5>
+            </div>
+        </div>
+        
+        <div class="kt-invoice__body" > 
+            <div class="kt-invoice__container">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let s of categoryDetails">
+                                <td>{{s.name}}</td>
+                                <td>{{s.Quantity}}</td>
+                                <td>{{s.price}}</td>
+                            </tr>
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+       
+        
+    </div>
+    
+    

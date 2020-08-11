@@ -1,0 +1,24 @@
+export class Payment{
+    employeeID:number;
+    paymentType:string;
+    tranactionType:string;
+    paid:number;
+    paymentID:number;
+    creationDate:Date;
+    studentID:number;
+    assignStudentID:number;
+    courseID:number;
+    branchID:number;
+    comment:string;
+    clear()
+    { 
+        this.employeeID=0;
+        this.paymentID=0;
+        this.paymentType='';
+        this.tranactionType='';
+        this.paid=0;
+        this.assignStudentID=0;
+        this.courseID=0;
+        this.comment=''
+    }
+}

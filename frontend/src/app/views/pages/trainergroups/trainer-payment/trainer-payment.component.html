@@ -1,0 +1,50 @@
+
+    <div #billingFile id="billingFile" >
+        <div class="header-container">
+            <div>
+                <img src="assets/media/logos/it.png"
+                    width="130px" height="130px">
+            </div>
+            <div *ngIf="myPayment&&myPayment.length>0">
+                <h5>My Payment</h5>
+            </div>
+ 
+            <div *ngIf="myPayment&&myPayment.length==0">
+                <h5>There is no payment for you now</h5>
+            </div>
+        </div>
+     
+        <div class="kt-invoice__body" style="margin-bottom:20px" *ngIf="myPayment&&myPayment.length>0">
+            <div class="kt-invoice__container">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead> 
+                            <tr>
+                                <th>GROUP</th>
+                                <th>TRACK</th>
+                                <th>TOTAL TEACHED HOUR</th>
+                                <th>PRICE PER HOUR</th>
+                            </tr>
+                        </thead> 
+                        <tbody>
+                            <tr *ngFor="let allPayment of groupTracks">
+                                <td>{{getGroupName(allPayment)}}</td>
+                                <td>{{getTrackName(allPayment.trackID)}}</td>
+                                <td>{{allPayment.trainerTotalTeachedHours}}</td>
+                                <td>{{allPayment.trainerPricePerHour}}</td>
+                                
+                            </tr>
+    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    
+    
+    
+
+    
+    </div>
+    
+    

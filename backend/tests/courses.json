@@ -1,0 +1,9 @@
+{
+	"employeeID":"1",
+	"providerID":"2",
+	"courseName":"meanstack",
+	"courseTracks":[{"trackName":"anguler"},{"trackHours":"30"},{"trackOutline":"11"}],
+	"courseDesc":"lkll",
+	"coursePrice":"4000",
+	"priceAfterDiscount":"3300"
+}

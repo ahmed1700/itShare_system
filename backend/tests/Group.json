@@ -1,0 +1,22 @@
+{
+	"employeeID":5,
+	"courseID":9,
+	"branchID":2,
+	"groupName":"MeanStack",
+    "groupSchedule": [
+        {
+            "days": "Monday",
+            "Hourfrom": "15:00",
+            "Hourto": "19:00"
+        },
+        {
+            "days": "Sunday",
+            "Hourfrom": "15:00",
+            "Hourto": "19:00"
+        }
+    ],
+    "groupStartDate": "2019-11-11",
+    "trainerID":1,
+    "class":"lab2"
+}
+

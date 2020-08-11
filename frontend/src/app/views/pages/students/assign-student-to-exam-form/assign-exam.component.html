@@ -1,0 +1,105 @@
+<!--begin::Form-->
+<div class="kt-portlet" style="margin:5px">
+    <div class="kt-portlet__head kt-portlet__head__custom">
+        <div class="kt-portlet__head-label">
+            <h3 class="kt-portlet__head-title">Add Payment</h3>
+        </div>
+    </div>
+    <kt-alert *ngIf="errormessage" type="warn" [showCloseButton]="true" (close)="onAlertClose($event)">
+        {{errormessage}}
+    </kt-alert>
+
+    <form [formGroup]="ExamStudentForm" class="kt-form">
+        <div class="kt-form__section kt-form__section--first">
+            <div class="form-group kt-form__group row">
+                    <div class="col-lg-6  col-md-6  col-sm-4 kt-margin-bottom-20-mobile" >
+                            <mat-form-field class="mat-form-field-fluid">
+                                <mat-label>Choose Branch</mat-label>
+                                <mat-select formControlName="branchID">
+                                    <mat-option *ngFor="let branch of allBranches" [value]="branch.branchID">
+                                        {{branch.name}}</mat-option>
+                                 </mat-select>
+                                <mat-error>Branch
+                                    is
+                                    <strong>required</strong>
+                                </mat-error>
+                                <mat-hint align="start">Please select
+                                    <strong>Branch</strong>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+            </div>
+            <div class="form-group kt-form__group row"> 
+                <div class="col-lg-6 col-md-6  col-sm-6 kt-margin-bottom-20-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <mat-label>Select Exam </mat-label>
+                        <mat-select formControlName="examID"  (selectionChange)="changeExam()">
+                            <mat-option *ngFor="let exam of allExams" [value]="exam.examID">
+                                {{exam.examName}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>Course is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6 col-md-6  col-sm-6 kt-margin-bottom-20-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput placeholder="Enter Student Code" formControlName="code" />
+                        <mat-error *ngIf="ExamStudentForm.controls['code'].errors?.required">Student Code is
+                            <strong>required</strong>
+                        </mat-error>
+                        <mat-hint align="start">Please enter
+                            <strong>Student Code</strong>
+                        </mat-hint>
+                    </mat-form-field> 
+                </div>
+            </div>
+            <div class="form-group kt-form__group row">
+
+                <div class="col-lg-6 col-md-6  col-sm-4 kt-margin-bottom-20-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <input matInput placeholder="Enter Total Price" formControlName="totalPrice" />
+                        <mat-error *ngIf="ExamStudentForm.controls['totalPrice'].errors?.required">Total Price is
+                            <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="ExamStudentForm.controls['totalPrice'].errors?.pattern">Please
+                            <strong>enter valid number</strong>
+                        </mat-error>
+                        <mat-hint align="start">Please enter
+                            <strong>Total Price</strong>
+                        </mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6 col-md-6  col-sm-4 kt-margin-bottom-20-mobile">
+                    <mat-form-field class="mat-form-field-fluid">
+                        <mat-label>Select paymentType </mat-label>
+                        <mat-select formControlName="paymentType">
+                            <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType">
+                                {{paymentType}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>paymentType is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+            </div>
+            <div class="kt-form__actions kt-form__actions--solid">
+                <div class="row text-right">
+                    <div class="col-lg-12">
+                        <button type="button" mat-raised-button (click)="onNoClick()" matTooltip="Cancel changes">
+                            Cancel
+                        </button>&nbsp;
+                        <button type="button" mat-raised-button color="primary" (click)="onSubmit()" matTooltip="Pay">
+                            Assign
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--end::Form-->

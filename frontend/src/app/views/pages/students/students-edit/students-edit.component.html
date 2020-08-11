@@ -1,0 +1,240 @@
+<kt-portlet>
+    <kt-portlet-header [title]="getComponentTitle()" [class]="'kt-portlet__head--lg'" [viewLoading$]="loading$">
+        <ng-container ktPortletTools>
+            <a [routerLink]="['/students']" class="btn btn-secondary kt-margin-r-10" mat-raised-button
+                matTooltip="Back to the users list">
+                <i class="la la-arrow-left"></i>
+                <span class="kt-hidden-mobile">Back</span> 
+            </a>
+            <a href="javascript:;" class="btn btn-secondary kt-margin-r-10" (click)="reset()"
+                [disabled]="selectedTab !== 0" mat-raised-button matTooltip="Reset changes">
+                <i class="la la-cog"></i>
+                <span class="kt-hidden-mobile">Reset</span>
+            </a>
+            <a href="javascript:;" class="btn btn-primary kt-margin-r-10" color="primary" (click)="onSumbit(false)"
+                mat-raised-button matTooltip="Save & Continue"  id="kt_login_signin_submit">
+                <span>Save</span>
+            </a>
+        </ng-container> 
+    </kt-portlet-header>
+
+    <kt-portlet-body>
+        <mat-tab-group [(selectedIndex)]="selectedTab">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <i class="mat-tab-label-icon fa fa-user"></i>
+                    Student info
+                </ng-template>
+                <ng-template matTabContent>
+                    <!--begin::Form                      class="kt-form kt-form--group-seperator-dashed"-->
+                    <div *ngIf="Student">
+                        <form [formGroup]="StudentForm" class="kt-form">
+
+                            <kt-alert *ngIf="errorMessage" type="warn" [showCloseButton]="true" [duration]="10000"
+                                (close)="onAlertClose($event)">
+                                {{errorMessage}}
+                            </kt-alert>
+                            <!-- kt-form__section--first class="kt-form__section " -->
+                            <div class="kt-form__section kt-form__section--first">
+                                <h6 style="margin-top:10px; color:blue;font-family: 'Roboto', sans-serif;"> Student Basic Information</h6>
+                                <hr style="color:black">
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter Username in Arabic"
+                                                formControlName="fullNameArabic" />
+                                            <mat-error *ngIf="StudentForm.controls['fullNameArabic'].errors?.required">
+                                                Username is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-error *ngIf="StudentForm.controls['fullNameArabic'].errors?.pattern">
+                                                Please enter
+                                                <strong>valid userName</strong>
+                                            </mat-error>
+                                            <mat-error *ngIf="StudentForm.controls['fullNameArabic'].errors?.minlength">
+                                                Username at least
+                                                <strong>3 chars</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>Username in Arabic</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter Username in English"
+                                                formControlName="fullNameEnglish" />
+                                            <mat-error *ngIf="StudentForm.controls['fullNameEnglish'].errors?.required">
+                                                Username is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-error *ngIf="StudentForm.controls['fullNameEnglish'].errors?.pattern">
+                                                Please enter
+                                                <strong>valid userName</strong>
+                                            </mat-error>
+                                            <mat-error
+                                                *ngIf="StudentForm.controls['fullNameEnglish'].errors?.minlength">
+                                                Username at least
+                                                <strong>3 chars</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>Full Name in English</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input type="text" matInput placeholder="Enter NationalID"
+                                                formControlName="nationalID" />
+
+                                            <mat-error
+                                                *ngIf="StudentForm.controls['nationalID'].errors?.pattern||StudentForm.controls['nationalID'].errors?.rangeLength">
+                                                Please enter
+                                                <strong>valid nationalID</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>nationalID</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter MobileNumber"
+                                                formControlName="mobile1" />
+                                            <mat-error *ngIf="StudentForm.controls['mobile1'].errors?.required">Mobile1
+                                                is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-error
+                                                *ngIf="StudentForm.controls['mobile1'].errors?.pattern||StudentForm.controls['mobile1'].errors?.rangeLength">
+                                                Please enter
+                                                <strong>valid Mobile Number</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>Mobile Number</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter Mobile Number"
+                                                formControlName="mobile2" />
+                                            <mat-error
+                                                *ngIf="StudentForm.controls['mobile2'].errors?.pattern||StudentForm.controls['mobile2'].errors?.rangeLength">
+                                                Please enter
+                                                <strong>valid Mobile Number</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>Mobile Number</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter Email" formControlName="email" />
+                                            <mat-error *ngIf="StudentForm.controls['email'].errors?.required">Email is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-error *ngIf="StudentForm.controls['email'].errors?.email">Please enter
+                                                <strong>valid Email</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>Email</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <mat-label>Choose Gender</mat-label>
+                                            <mat-select formControlName="gender">
+                                                <mat-option value="male">Male</mat-option>
+                                                <mat-option value="female">Female</mat-option>
+                                            </mat-select>
+                                            <mat-error>Gender is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please Choose
+                                                <strong>Gender</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter Password"
+                                                formControlName="password" />
+                                            <mat-error>
+                                                Password is
+                                                <strong>required</strong>
+                                             </mat-error>
+                                            <mat-hint align="start">Please enter
+                                                <strong>Student Password</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <h6 style="margin-top:10px; color:blue;font-family: 'Roboto', sans-serif">Student Address</h6>
+                                <hr style="color:black">
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <mat-label>Choose City</mat-label>
+                                            <mat-select formControlName="city">
+                                                <mat-option *ngFor="let city of Cities" [value]="city">{{city}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>City is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please choose
+                                                <strong>City</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <input matInput placeholder="Enter Address" formControlName="address" />
+                                            
+                                            <mat-hint align="start">Please enter
+                                                <strong>Address</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+
+                                <h6 style="margin-top:10px; color:blue;font-family: 'Roboto', sans-serif;">Student Type</h6>
+                                <hr style="color:black">
+                                <div class="form-group kt-form__group row">
+                                    <div class="col-lg-4  col-md-4  col-sm-6 kt-margin-bottom-20-mobile">
+                                        <mat-form-field class="mat-form-field-fluid">
+                                            <mat-label>Choose studentType</mat-label>
+                                            <mat-select formControlName="studentsType">
+                                                <mat-option *ngFor="let studentType of studentsType"
+                                                    [value]="studentType">{{studentType|titlecase}}</mat-option>
+                                            </mat-select>
+                                            <mat-error>studentType is
+                                                <strong>required</strong>
+                                            </mat-error>
+                                            <mat-hint align="start">Please choose
+                                                <strong>studentType</strong>
+                                            </mat-hint>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </form>
+                    </div>
+                    <!--end::Form-->
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+    </kt-portlet-body>
+</kt-portlet>

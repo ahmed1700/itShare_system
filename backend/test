@@ -1,0 +1,686 @@
+routes: 
+  (employees,branch,providers,courses,tracks,trainers,students,assignStudent,groups,
+  teacheingAttendant,delayAttendant,alternativeAttendant,payments,vacations)
+     ___________________________________________________
+
+Employees:                       بيانات الموظفين                       
+
+Api:localhost:4040/employees
+service:get all employees => localhost:4040/employees => get
+       get employee by ID ,localhost:4040/employees/employeeID =>get, req.params :employeeID
+       post new employee ,localhost:4040/employees =>post,
+   req.body =>
+    {"fullNameArabic": "ضحي عبد المنعم محمد كمال السيد الزرقا",
+    "fullNameEnglish": "doha mohamed",
+    "nationalID": "29401601301684",
+    "mobile1": "01015720906",
+    "mobile2": "01273975652",
+    "homeTel":"0402101657",
+    "email": "dohakamal@gmail.com",
+    "gender": "female",
+    "city": "al-Mahallah al-Kubra",
+    "address": "algomhoria",
+    "branchID":5
+    }
+
+    res:{
+    "creationDate": "2019-12-27T08:25:48.047Z",
+    "status": "active",
+    "_id": "5e05c1effeaea0140844d623",
+    "fullNameArabic": "ضحي عبد المنعم محمد كمال السيد الزرقا",
+    "fullNameEnglish": "doha mohamed",
+    "nationalID": "29401601301684",
+    "homeTel": "0402101657",
+    "mobile1": "01015720906",
+    "mobile2": "01273975652",
+    "email": "dohakamal@gmail.com",
+    "gender": "female",
+    "city": "al-Mahallah al-Kubra",
+    "address": "algomhoria",
+    "branchID": 5,
+    "employeeID": 3,
+    "__v": 0
+}
+        update employee , localhost:4040/employees/employeeID =>put  ,req.params :employeeID
+
+     req.body =>
+    {"fullNameArabic": "ضحي عبد المنعم محمد كمال السيد الزرقا",
+    "fullNameEnglish": "doha mohamed",
+    "nationalID": "29401601301684",
+    "mobile1": "01015720906",
+    "mobile2": "01273975652",
+    "homeTel":"0402101657",
+    "email": "dohakamal94@gmail.com",
+    "gender": "female",
+    "city": "al-Mahallah al-Kubra",
+    "address": "algomhoria",
+    "branchID":5
+    }
+
+      خلي بالك مينفعش ادخل اي مدينه لازم تكون واحده من دول 
+      "city" must be one of [Cairo, Alexandria, al-Jizah, Abnub, Tanta, al-Mansurah, Sharm-ash-Shaykh, al-Fayyum, ´Izbat-al-Burj, al-Ibrahimiyah, Asyut, al-Ismailiyah, Nasr, al-Qanatir-al-Khayriyah, Aswan, Damanhur, al-Ghardaqah, Shubra al-Khaymah, al-Ashir mir-Ramadan, Aja, Bur Sa´id, Mit Gamr, Banha, Abu Kabir, az-Zaqaziq, Sawhaj, Awsim, Shibin-al-Kawm, Talkha, Zifta, Kafr-az-Zayyat, al-Karnak, an-Nasir, Ras Gharib, al-Mahallah al-Kubra, Kafr-ash-Shaykh, al-Matariyah, Dumyat, al-Kharijah, Lalamusa, Abyar, as-Suways, Kafr-ad-Dawwar, Bani Suwayf, al-´Abbasiyah, Bilqas, Sibin-al-Qanatir, Shirbin, Matay, Kafr Saqr, Abu Hummus, Dandarah, al-Qusayr, al-Burj, al-Uqsur, Qina, Mallawi, Minuf, Faqus, Dishna, Tala, Kawm Hamada, Abu Hammad, Rafah, al-Husayniyah, Dar-as-Salam, al-Mahmudiyah, al-Fant, al-Maks, al-Hawamidiyah, Akhmim, Samalut, Nasir, Ashmun, al-Manzilah, Magagah, Rashid, Isna, al-Khankah, Marsa Matruh, al-Badrashayn, Qus, Sidi Salim, Quwaysina, Abu al-Matamir, Naj´ Hammadi, as-Saff, al-Maragah, Ihnasiyah, Mutubis, an-Nukhaylah, Qift, Naqadah, Shubra Khit, Mahallat Marhum, Sahil Salim, ad-Dayr, Kafr Salim, Zawiyat Sidi Gazi, Sawl, Sanhur, al-Mansuriyah, Bahut, Tandah, al-Ma'sarah, al-Batanun, Hijazah, Daraw, ad-Dabbiyah, al-Ghuli´ah, Bilbays, Qalyub, Disuq, Armant, Abu Tij, Tukh, Biyala, Minyat-al-Qamh, Bani Mazar, al-Fashn, Abu Qurqas, Minyat-an-Nasr, Samannud, Itsa, az-Zarqa, Dayr Mawas, al-Bajur, al-Wasitah, Sumusta, ar-Rawdah, Birkat-as-Sab´, Safaja, ar-Rahmaniyah, al-Wahat-al-Bahriyah, Qallin, Hiw, ar-Radisiyat-al-Bahriyah, al-Ballas, Saqqarah, ad-Da'ba, Sanabu, Qutur, Umm-al-Qusur, al-Qassasin, Qiman al-´Arus, al-Fikriyah, Tallah, al-Qantarah, as-Santah, Bani Muhammadiyat, Buturis, Kafr-al-Battikh, Kafr-al-Jara´idah, Abu Za´bal, Kiman-al-Mata´inah, Qasr Qarun, Fidimin, Nahya, al-Haddadi, al-Kawm-al-Akhdar, ad-Daljamun, Milij, Dayrut-ash-Sharif, Nisf Thani Bashbish, Fa´id, Awlad Tawq Sharq, Abu Rudays, al-Waqf, Qasr-al-Farafirah, Sidi Barrani, at-Tur, Atfih, Asfun-al-Mata´inah, Sarabiyum, Zawiyat Shammas, as-Salihiyah, Jirja, Idfu, Idku, Dikirnis, Tagta, as-Sinbillawayn, Hawsh ´Îsa, Sinnuris, Manfalut, al-Jamaliyah, Tima, al-Qusiyah, Dayrut, Fuwah, Kawm Umbu, al-Qurayn, al-Manshah, Faraskur, Beba Veche, Basyun, Farshut, Sirs-al-Layyanah, Diyarb Najm, at-Tall-al-Kabir]
+
+    res:
+    {
+    "creationDate": "2019-12-27T08:25:48.047Z",
+    "status": "active",
+    "_id": "5e05c1effeaea0140844d623",
+    "fullNameArabic": "ضحي عبد المنعم محمد كمال السيد الزرقا",
+    "fullNameEnglish": "doha mohamed",
+    "nationalID": "29401601301684",
+    "homeTel": "0402101657",
+    "mobile1": "01015720906",
+    "mobile2": "01273975652",
+    "email": "dohakamal94@gmail.com",
+    "gender": "female",
+    "city": "al-Mahallah al-Kubra",
+    "address": "algomhoria",
+    "branchID": 5,
+    "employeeID": 3,
+    "__v": 0
+}
+              
+                             
+                            Validation
+ req:{
+     "fullNameArabic": "ضحي عبد المنعم محمد كمال السيد الزرقا",
+    "fullNameEnglish": "doha mohamed",
+    "nationalID": "29401601301684",
+    "mobile1": "01015720906",
+    "mobile2": "0123975652", 
+    "homeTel":"0402101557",
+    "email": "dohakamal@gmail.com",
+    "gender": "female",
+    "city": "al-Mahallah al-Kubra",
+    "address": "algomhoria",
+    "branchID":5
+    }               
+  res: "mobile2" length must be 11 characters long
+
+  res:the homeTel is exist
+
+  error :"E11000 duplicate key error collection: itShare.employees index: nationalID_1 dup key: { : \"29070242103373\" }"
+    when update unique value with existing value
+        __________________________________________________________________
+
+branches:                   دي بيانات فروع الشركه 
+Api:localhost:4040/branch 
+service: get all branches => localhost:4040/branch => get
+        get branch by id =>localhost:4040/branch/branchID => get ,req.params :branchID
+        add new branch =>localhost:4040/branch =>post  
+    req.body :{
+        "name":"nasr city",
+        "address":"70 mostafa el-nahas st",
+        "details":"5 lab , 10 employee ,10 pc",
+        "ip": 1
+    }
+
+    res:{
+    "creationDate": "2019-12-13T16:47:40.783Z",
+    "_id": "5df3c2b8d50cb71280284ca2",
+    "name": "nasr city",
+    "address": "70 mostafa el-nahas st",
+    "details": "5 lab , 10 employee ,10 pc",
+    "ip": 1,
+    "branchID": 2,
+    "__v": 0
+   }
+
+       update branch => localhost:4040/branch/branchID => put ,req.params :branchID
+   
+    req.body :{
+        "name":"nasr city",
+        "address":"70 mostafa el-nahas st",
+        "details":"5 lab , 19 employee ,10 pc",
+        "ip": 2
+    }  
+
+    res:{
+    "creationDate": "2019-12-13T17:13:38.166Z",
+    "_id": "5df3c7b203c49a0cccf26f65",
+    "name": "doky",
+    "address": "70 hussein mesadak st",
+    "details": "5 lab , 19 employee ,10 pc",
+    "ip": 2,
+    "branchID": 5,
+    "__v": 0
+}
+                                    
+     ip  ده ايه ؟
+      ___________________________________________________________________________
+tracks:                     دي التراكات هستخدمها مع الكورس ومع جدول حضور المدرب
+
+Api:localhost:4040/tracks 
+service: get all tracks => localhost:4040/tracks => get
+        get track by id =>localhost:4040/tracks/trackID => get ,req.params :trackID
+        add new track =>localhost:4040/tracks =>post  
+    req.body :{
+        "trackName":"angular",
+        "trackHours":50,
+        "price":1000,
+        "trackOutline": "routing,pipes,binding,http,service"
+    }
+
+    res:{
+        "creationDate": "2019-12-13T17:42:59.649Z",
+        "trackName": "angular",
+        "trackHours": 50,
+        "price": 1000,
+        "trackOutline": "routing,pipes,binding,http,service",
+        "trackID": 7
+    },
+
+    
+
+       update track => localhost:4040/tracks/trackID => put ,req.params :trackID
+   
+    req.body :{
+        "trackName":"angular",
+        "trackHours":50,
+        "price":900,
+        "trackOutline": "routing,pipes,binding,http,service"
+    }
+
+    res:{
+    "creationDate": "2019-12-13T17:42:59.649Z",
+    "_id": "5df3d28c29f2cc01e4160c75",
+    "trackName": "angular",
+    "trackHours": 50,
+    "price": 900,
+    "trackOutline": "routing,pipes,binding,http,service",
+    "trackID": 7,
+    "__v": 0
+} 
+       trackOutline                        بالنسبه له هوهيبقي فايل ولا ايه ؟
+
+________________________________________________________
+
+providers:          الشركات اللي بيندرج تحتها شوية كورسات  
+
+Api:localhost:4040/providers 
+service: get all providers => localhost:4040/providers => get
+        get provider by id =>localhost:4040/providers/providerID => get ,req.params :providerID
+        add new provider =>localhost:4040/providers =>post  
+    req.body :{
+    "employeeID": 2,
+    "providerName": "google",
+    "providerDesc": "atyamohammedatya",
+    }
+
+    res:{
+    "creationDate": "2019-12-13T18:16:08.285Z",
+    "_id": "5df3d6fc14eeaf08c8880985",
+    "employeeID": 2,
+    "providerName": "google",
+    "providerDesc": "atyamohammedatya",
+    "providerID": 2,
+    "__v": 0
+}
+
+    
+
+       update provider => localhost:4040/tracks/trackID => put ,req.params :providerID
+   
+    {
+    "employeeID": 2,
+    "providerName": "google",
+    "providerDesc": "wheristhecourser"
+    }
+
+    res:{
+    "creationDate": "2019-12-13T18:16:08.285Z",
+    "_id": "5df3d6fc14eeaf08c8880985",
+    "employeeID": 2,
+    "providerName": "google",
+    "providerDesc": "wheristhecourser",
+    "providerID": 2,
+    "__v": 0
+}
+
+    فين الكورساااات ؟؟
+    _________________________________________________
+courses:      
+
+
+Api:localhost:4040/courses 
+service: get all courses => localhost:4040/courses => get
+        get course by id =>localhost:4040/courses/courseID => get ,req.params :courseID
+        add new course =>localhost:4040/courses =>post  
+    req.body :{
+	"employeeID":2,
+	"providerID":2,
+	"courseName":"meanstack",
+	"courseTracks":[
+		{"trackID":7},
+		{"trackID":9},
+		{"trackID":10}
+		],
+	"courseDesc":"asddfg",
+    "discound":4
+}      وهنا بقي هو بيحسبلي عدد ساعات الكورس وسعر الكورس ولو فيه خصم هيبعتلي السعر بعد
+الخصم ولو مفيش خصم هيعتبر ان السعر بعد الخصم هو سعر الكورس علشان انا بعد كده هستخدم بس السعر بعد الخصم 
+
+    res:{
+    "creationDate": "2019-12-14T19:50:04.539Z",
+    "_id": "5df53cf22215ad17d04b9bea",
+    "employeeID": 2,
+    "providerID": 2,
+    "courseName": "meanstack",
+    "courseTracks": [
+        {
+            "_id": "5df53cf22215ad17d04b9bed",
+            "trackID": 7
+        },
+        {
+            "_id": "5df53cf22215ad17d04b9bec",
+            "trackID": 9
+        },
+        {
+            "_id": "5df53cf22215ad17d04b9beb",
+            "trackID": 10
+        }
+    ],
+    "courseDesc": "asddfg",
+    "courseHours": 70,
+    "coursePrice": 1500,
+    "discound": 4,
+    "priceAfterDiscount": 1440,
+    "courseID": 11,
+    "__v": 0
+}
+
+    
+
+       update provider => localhost:4040/tracks/trackID => put ,req.params :providerID
+   
+    {
+    "employeeID": 2,
+    "providerName": "google",
+    "providerDesc": "wheristhecourser"
+    }
+
+    res:{
+    "creationDate": "2019-12-13T18:16:08.285Z",
+    "_id": "5df3d6fc14eeaf08c8880985",
+    "employeeID": 2,
+    "providerName": "google",
+    "providerDesc": "wheristhecourser",
+    "providerID": 2,
+    "__v": 0
+}
+
+________________________________________________________
+trainers:                 المدربين 
+
+Api:localhost:4040/trainers/
+service:get all trainers => localhost:4040/trainers => get
+        get trainer by id =>localhost:4040/trainers/trainerID => get ,req.params :trainerID
+        add new trainer =>localhost:4040/trainers =>post  
+    req.body :{
+    "employeeID": 2,
+    "fullNameArabic": "ضحي عبد لمنعم محمد كمال",
+    "fullNameEnglish": "doha kamal",
+    "nationalID": "29077242434573",
+    "mobile1": "01028845275",
+    "mobile2": "01153523052",
+    "email": "doha7@gmail.com",
+    "gender": "female",
+    "city": "Cairo",
+    "address": "21 street",
+    "contractType":"full time",
+    "pricePerHour":"100"
+}
+
+
+    res:   { "creationDate": "2019-12-14T18:58:22.007Z",
+    "_id": "5df530d5d335551474cb178c",
+    "employeeID": 2,
+    "fullNameArabic": "ضحي عبد لمنعم محمد كمال",
+    "fullNameEnglish": "doha kamal",
+    "nationalID": "29077242434573",
+    "mobile1": "01028845275",
+    "mobile2": "01153523052",
+    "email": "doha7@gmail.com",
+    "gender": "female",
+    "city": "Cairo",
+    "address": "21 street",
+    "contractType": "full time",
+    "pricePerHour": 100,
+    "trainerID": 17,
+    "__v": 0
+}
+    
+
+       update trainer => localhost:4040/trainers/trainerID => put ,req.params :trainerID
+   
+    req :{
+    "employeeID": 2,
+    "fullNameArabic": "ضحي عبد لمنعم محمد كمال",
+    "fullNameEnglish": "doha kamal elzrka",
+    "nationalID": "29077242434573",
+    "mobile1": "01028845275",
+    "mobile2": "01153523052",
+    "email": "doha7@gmail.com",
+    "gender": "female",
+    "city": "Cairo",
+    "address": "21 street",
+    "contractType":"full time",
+    "pricePerHour":"100"
+}
+
+
+    res:{
+    "creationDate": "2019-12-14T18:58:22.007Z",
+    "_id": "5df530d5d335551474cb178c",
+    "employeeID": 2,
+    "fullNameArabic": "ضحي عبد لمنعم محمد كمال",
+    "fullNameEnglish": "doha kamal elzrka",
+    "nationalID": "29077242434573",
+    "mobile1": "01028845275",
+    "mobile2": "01153523052",
+    "email": "doha7@gmail.com",
+    "gender": "female",
+    "city": "Cairo",
+    "address": "21 street",
+    "contractType": "full time",
+    "pricePerHour": 100,
+    "trainerID": 17,
+    "__v": 0
+}
+           
+__________________________________________________________
+
+alternativeAttendant:                              ده جدول بحط فيه كل المحاضرات المؤجله الهدف منها لما مدرب يعمل تسجيل دخول في يوم مش يومه يدخل يدور جواها هل هو ماجل محاضره ولا لا 
+
+Api:localhost:4040/alternativeAttendan
+
+functions :get all ,get by id,post ,put
+
+post
+
+req:{
+            "groupID": 65,
+             "trainerID":17,
+             "trackID":8,
+             "HourFrom":"16:00",
+             "HourTo": "18:00",
+             "class":"lab3"
+        }
+
+ res:{
+    "_id": "5e05ede56f3ff31430d0fd21",
+    "groupID": 65,
+    "trainerID": 17,
+    "trackID": 8,
+    "HourFrom": "16:00",
+    "HourTo": "18:00",
+    "class": "lab3",
+    "alternativeAttendantID": 1,
+    "__v": 0
+}
+
+___________________________________________________________________________
+
+groups:                            
+
+Api:localhost:4040/groups
+
+req:{
+	"employeeID":2,
+	"courseID":13,
+	"branchID":5,
+	"groupName":"MeanStack16987",
+    "groupSchedule": [
+    	 {
+            "days": "Saturday",
+            "Hourfrom": "18:00",
+            "Hourto": "22:00"
+        },
+        {
+            "days": "Monday",
+            "Hourfrom": "18:00",
+            "Hourto": "22:00"
+        },
+        {
+            "days": "Wednesday",
+            "Hourfrom": "18:00",
+            "Hourto": "22:00"
+        }
+    ],
+    "groupTracks":[
+        {"trackID":8,"trainerID":17},
+        {"trackID":10,"trainerID":17},
+        {"trackID":11,"trainerID":17},
+        {"trackID":12,"trainerID":17},
+        {"trackID":13,"trainerID":17}
+    ],
+    "groupStartDate": "2020-1-4",
+    
+    "class":"lab2",
+    "groupType":"Online",
+    "groupStatus":"working"
+}
+
+
+res:{
+    "creationDate": "2019-12-27T12:12:14.796Z",
+    "cousreHistory": [
+        "Sat Jan 04 2020 00:00:00 GMT+0200 (GMT+02:00)",
+        "Mon Jan 06 2020 00:00:00 GMT+0200 (GMT+02:00)",
+        "Wed Jan 08 2020 00:00:00 GMT+0200 (GMT+02:00)",
+        "Sat Jan 11 2020 00:00:00 GMT+0200 (GMT+02:00)",
+        "Mon Jan 13 2020 00:00:00 GMT+0200 (GMT+02:00)",
+        "Sat Jan 18 2020 00:00:00 GMT+0200 (GMT+02:00)",
+        "Mon Jan 20 2020 00:00:00 GMT+0200 (GMT+02:00)",
+        "Wed Jan 22 2020 00:00:00 GMT+0200 (GMT+02:00)",
+        "Sat Jan 25 2020 00:00:00 GMT+0200 (GMT+02:00)",
+        "Mon Jan 27 2020 00:00:00 GMT+0200 (GMT+02:00)",
+        "Sat Feb 01 2020 00:00:00 GMT+0200 (GMT+02:00)",
+        "Mon Feb 03 2020 00:00:00 GMT+0200 (GMT+02:00)",
+        "Wed Feb 05 2020 00:00:00 GMT+0200 (GMT+02:00)",
+        "Sat Feb 08 2020 00:00:00 GMT+0200 (GMT+02:00)",
+        "Mon Feb 10 2020 00:00:00 GMT+0200 (GMT+02:00)",
+        "Wed Feb 12 2020 00:00:00 GMT+0200 (GMT+02:00)"
+    ],
+    "_id": "5e05f527eef6191b04d6dbda",
+    "employeeID": 2,
+    "courseID": 13,
+    "branchID": 5,
+    "groupName": "MeanStack16987",
+    "groupSchedule": [
+        {
+            "_id": "5e05f527eef6191b04d6dbdd",
+            "days": "Saturday",
+            "Hourfrom": "18:00",
+            "Hourto": "22:00"
+        },
+        {
+            "_id": "5e05f527eef6191b04d6dbdc",
+            "days": "Monday",
+            "Hourfrom": "18:00",
+            "Hourto": "22:00"
+        },
+        {
+            "_id": "5e05f527eef6191b04d6dbdb",
+            "days": "Wednesday",
+            "Hourfrom": "18:00",
+            "Hourto": "22:00"
+        }
+    ],
+    "groupStartDate": "2020-01-03T22:00:00.000Z",
+    "groupTracks": [
+        {
+            "trackHistory": [
+                "Sat Jan 04 2020 00:00:00 GMT+0200 (GMT+02:00)",
+                "Mon Jan 06 2020 00:00:00 GMT+0200 (GMT+02:00)",
+                "Wed Jan 08 2020 00:00:00 GMT+0200 (GMT+02:00)",
+                "Sat Jan 11 2020 00:00:00 GMT+0200 (GMT+02:00)",
+                "Mon Jan 13 2020 00:00:00 GMT+0200 (GMT+02:00)",
+                "Sat Jan 18 2020 00:00:00 GMT+0200 (GMT+02:00)",
+                "Mon Jan 20 2020 00:00:00 GMT+0200 (GMT+02:00)",
+                "Wed Jan 22 2020 00:00:00 GMT+0200 (GMT+02:00)"
+            ],
+            "_id": "5e05f527eef6191b04d6dbe2",
+            "trackID": 8,
+            "trainerID": 17,
+            "trackStartDate": "2020-01-03T22:00:00.000Z",
+            "trackEndDate": "2020-01-21T22:00:00.000Z"
+        },
+        {
+            "trackHistory": [
+                "Wed Jan 22 2020 00:00:00 GMT+0200 (GMT+02:00)",
+                "Sat Jan 25 2020 00:00:00 GMT+0200 (GMT+02:00)",
+                "Mon Jan 27 2020 00:00:00 GMT+0200 (GMT+02:00)"
+            ],
+            "_id": "5e05f527eef6191b04d6dbe1",
+            "trackID": 10,
+            "trainerID": 17,
+            "trackStartDate": "2020-01-21T22:00:00.000Z",
+            "trackEndDate": "2020-01-26T22:00:00.000Z"
+        },
+        {
+            "trackHistory": [
+                "Sat Feb 01 2020 00:00:00 GMT+0200 (GMT+02:00)",
+                "Mon Feb 03 2020 00:00:00 GMT+0200 (GMT+02:00)"
+            ],
+            "_id": "5e05f527eef6191b04d6dbe0",
+            "trackID": 11,
+            "trainerID": 17,
+            "trackStartDate": "2020-01-28T22:00:00.000Z",
+            "trackEndDate": "2020-02-02T22:00:00.000Z"
+        },
+        {
+            "trackHistory": [
+                "Mon Feb 03 2020 00:00:00 GMT+0200 (GMT+02:00)",
+                "Wed Feb 05 2020 00:00:00 GMT+0200 (GMT+02:00)",
+                "Sat Feb 08 2020 00:00:00 GMT+0200 (GMT+02:00)"
+            ],
+            "_id": "5e05f527eef6191b04d6dbdf",
+            "trackID": 12,
+            "trainerID": 17,
+            "trackStartDate": "2020-02-02T22:00:00.000Z",
+            "trackEndDate": "2020-02-07T22:00:00.000Z"
+        },
+        {
+            "trackHistory": [
+                "Sat Feb 08 2020 00:00:00 GMT+0200 (GMT+02:00)",
+                "Mon Feb 10 2020 00:00:00 GMT+0200 (GMT+02:00)",
+                "Wed Feb 12 2020 00:00:00 GMT+0200 (GMT+02:00)"
+            ],
+            "_id": "5e05f527eef6191b04d6dbde",
+            "trackID": 13,
+            "trainerID": 17,
+            "trackStartDate": "2020-02-07T22:00:00.000Z",
+            "trackEndDate": "2020-02-11T22:00:00.000Z"
+        }
+    ],
+    "class": "lab2",
+    "groupType": "Online",
+    "groupStatus": "working",
+    "groupEndDate": "2020-02-11T22:00:00.000Z",
+    "groupID": 78,
+    "__v": 0
+}
+___________________________________________________
+
+students:     البيانات الاساسيه للطلبه
+
+Api:localhost:4040/students
+
+functions :get/ get by id / post /put
+
+req:{
+    
+    "employeeID": 2,
+    "fullNameArabic": "عطيه محمد عطيه",
+    "fullNameEnglish": "atyamohammedatya",
+    "nationalID": "29070242103373",
+    "mobile1": "01153176051",
+    "mobile2": "01028807275",
+    "email": "atya@ijas.com",
+    "gender": "male",
+    "studentsType": "univeristy",
+    "city": "Cairo",
+    "address": "21 street",
+    "status":"intersted"
+}
+
+res:{
+    "creationDate": "2019-12-27T16:57:29.180Z",
+    "_id": "5e063808e6a09912bc612c40",
+    "employeeID": 2,
+    "fullNameArabic": "عطيه محمد عطيه",
+    "fullNameEnglish": "atyamohammedatya",
+    "nationalID": "29070242103373",
+    "mobile1": "01153176051",
+    "mobile2": "01028807275",
+    "email": "atya@ijas.com",
+    "gender": "male",
+    "studentsType": "univeristy",
+    "city": "Cairo",
+    "address": "21 street",
+    "status": "intersted",
+    "studentID": 1,
+    "__v": 0
+}
+_______________________________________________________________
+
+tracks
+
+Api:localhost:4040/tracks
+
+functions:get/get by id/post/put
+
+req:{
+        "trackName":"bootstrab",
+        "trackHours":10,
+        "price":300,
+        "trackOutline": "router,handle"
+    } 
+res:{
+        "creationDate": "2019-12-22T08:08:57.804Z",
+        "trackName": "bootstrab",
+        "trackHours": 10,
+        "price": 300,
+        "trackOutline": "router,handle",
+        "trackID": 13
+    }
+    ________________________________________________________
+  assignStudent:localhost:4040/assignStudent
+
+  req:{
+	"employeeID":2,
+	"studentID":1,
+	"groupID":78,
+	"courseID":13,
+	"courseTracks":[{"trackID":10},{"trackID":11},{"trackID":12}],
+	"isCourseFinished":false
+}
+
+res:{
+    "isCourseFinished": false,
+    "creationDate": "2019-12-27T18:38:41.729Z",
+    "_id": "5e064fb770d8eb0b1804f073",
+    "employeeID": 2,
+    "studentID": 1,
+    "groupID": 78,
+    "courseID": 13,
+    "courseTracks": [
+        {
+            "_id": "5e064fb770d8eb0b1804f076",
+            "trackID": 10
+        },
+        {
+            "_id": "5e064fb770d8eb0b1804f075",
+            "trackID": 11
+        },
+        {
+            "_id": "5e064fb770d8eb0b1804f074",
+            "trackID": 12
+        }
+    ],
+    "totalPayment": 900,
+    "assignStudentID": 1,
+    "__v": 0
+}
+        
